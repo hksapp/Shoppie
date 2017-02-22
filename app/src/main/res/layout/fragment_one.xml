@@ -1,144 +1,291 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.hkapps.shoppie.ShoppieFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+            <!--Groceries-->
+            <!--Groceries-->
+            <!--Groceries-->
+            <!--Groceries-->
+            <!--Groceries-->
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="250dp"
                 android:background="@drawable/grocery"
-                android:gravity="center"
-                android:layout_height="250dp">
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="2"
-
                     android:layout_height="match_parent"
+
+                    android:layout_weight="2"
                     android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/trlly"/>
+                        android:src="@drawable/trlly" />
 
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="1dp"
-                    android:background="#ffffff"
-                    android:layout_marginTop="22dp"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="22dp"
-                    android:layout_height="match_parent" />
-
-
-
+                    android:layout_marginTop="22dp"
+                    android:background="#ffffff" />
 
 
                 <LinearLayout
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:gravity="center"
-                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:background="#ffffff"
+                        android:layout_height="1dp"
                         android:layout_marginLeft="22dp"
                         android:layout_marginRight="22dp"
-                        android:layout_height="1dp" />
+                        android:background="#ffffff" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:textColor="#ffffff"
-                        android:fontFamily="sans-serif-smallcaps"
-                        android:textSize="34sp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="12dp"
-
+                        android:fontFamily="sans-serif-smallcaps"
                         android:text="Groceries"
 
+                        android:textColor="#ffffff"
 
-                        android:layout_height="wrap_content" />
+
+                        android:textSize="34sp" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:background="#ffffff"
+                        android:layout_height="1dp"
                         android:layout_marginLeft="22dp"
                         android:layout_marginRight="22dp"
-                        android:layout_height="1dp" />
+                        android:background="#ffffff" />
 
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="34dp"
-                        android:text="Explore"
                         android:layout_margin="22dp"
-                        android:background="#fff176"/>
+                        android:background="#fff176"
+                        android:textAllCaps="false"
+                        android:text="Explore the List!" />
 
                 </LinearLayout>
 
 
-
-
             </LinearLayout>
+
+
+            <!--Groceries-->
+            <!--Groceries-->
+            <!--Groceries-->
+            <!--Groceries-->
+            <!--Groceries-->
+
+
+
+            <!--Medicines-->
+            <!--Medicines-->
+            <!--Medicines-->
+            <!--Medicines-->
+            <!--Medicines-->
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:background="@drawable/grocery3"
+                android:layout_height="250dp"
+                android:background="#00897b"
+                android:gravity="center">
 
-                android:layout_height="250dp">
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:background="@android:color/holo_blue_dark"
-                android:orientation="horizontal"
-                android:layout_height="250dp">
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1.6"
-                    android:background="@android:color/holo_blue_dark"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/trlly"/>
+                        android:src="@drawable/mediiiccc" />
 
                 </LinearLayout>
+
                 <TextView
-                    android:layout_width="3dp"
-                    android:background="#ffffff"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:layout_height="match_parent" />
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="22dp"
+                    android:layout_marginTop="22dp"
+                    android:background="#ffffff" />
+
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:background="#ffffff" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:text="Medicines"
+
                         android:textColor="#ffffff"
-                        android:text="sdovhvsdoi"/>
+
+
+                        android:textSize="34sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:background="#ffffff" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_margin="22dp"
+                        android:background="#fff176"
+                        android:textAllCaps="false"
+                        android:text="Explore the list" />
+
                 </LinearLayout>
 
-            </LinearLayout>
 
             </LinearLayout>
 
+
+            <!--Medicines-->
+            <!--Medicines-->
+            <!--Medicines-->
+            <!--Medicines-->
+            <!--Medicines-->
+
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@drawable/blue"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/trlly" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="22dp"
+                    android:layout_marginTop="22dp"
+                    android:background="#ffffff" />
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:background="#ffffff" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:text="Mall items"
+
+                        android:textColor="#ffffff"
+
+
+                        android:textSize="34sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:background="#ffffff" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_margin="22dp"
+                        android:background="#fff176"
+                        android:textAllCaps="false"
+
+                        android:text="Explore the list" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+            <!--Mall shopping-->
+
+
+        </LinearLayout>
 
 
     </ScrollView>
