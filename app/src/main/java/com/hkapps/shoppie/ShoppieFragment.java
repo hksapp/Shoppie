@@ -25,6 +25,8 @@ public class ShoppieFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootview = inflater.inflate(R.layout.fragment_one, container, false);
 
+
+
         return rootview;
     }
 
