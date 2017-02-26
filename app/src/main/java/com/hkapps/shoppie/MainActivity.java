@@ -3,6 +3,8 @@ package com.hkapps.shoppie;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -13,32 +15,43 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "MainActivity" ;
     private static final int RC_SIGN_IN = 1;
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab,fab1,fab2;
+    private TextView profile_text,circle_text;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TabLayout tabLayout;
+    private Toolbar toolbar;
+    private AppBarLayout appbar;
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
         FirebaseAuthenticationProcess();
+
+        appbar=(AppBarLayout)findViewById(R.id.appbar);
 
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -47,17 +60,23 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                AuthUI.getInstance().signOut(MainActivity.this);
 
-            }
-        });
+
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab1 = (FloatingActionButton)findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton)findViewById(R.id.fab2);
+        profile_text = (TextView)findViewById(R.id.textView_profile);
+        circle_text=(TextView)findViewById(R.id.textView_circle);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        fab.setOnClickListener(this);
+        fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
     }
+
+
 
     @Override
     protected void onStart() {
@@ -66,7 +85,57 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.fab:
 
+                animateFAB();
+                break;
+            case R.id.fab1:
+
+                Log.d("circle", "Fab 1");
+                break;
+            case R.id.fab2:
+
+                Log.d("profile", "Fab 2");
+                break;
+        }
+    }
+    public void animateFAB(){
+
+        if(isFabOpen){
+            viewPager.setAlpha((float) 1.0);
+            appbar.setAlpha((float) 1.0);
+            tabLayout.setAlpha((float)1.0);
+
+            fab.startAnimation(rotate_backward);
+            fab1.startAnimation(fab_close);
+            fab2.startAnimation(fab_close);
+            profile_text.startAnimation(fab_close);
+            circle_text.startAnimation(fab_close);
+            fab1.setClickable(false);
+            fab2.setClickable(false);
+            isFabOpen = false;
+            Log.d("Raj", "close");
+
+        } else {
+            viewPager.setAlpha((float) 0.2);
+            tabLayout.setAlpha((float)0.2);
+            appbar.setAlpha((float)0.2);
+            fab.startAnimation(rotate_forward);
+            fab1.startAnimation(fab_open);
+            fab2.startAnimation(fab_open);
+            profile_text.startAnimation(fab_open);
+            circle_text.startAnimation(fab_open);
+            fab1.setClickable(true);
+            fab2.setClickable(true);
+            isFabOpen = true;
+            Log.d("Raj","open");
+
+        }
+    }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ShoppieFragment(), "Shop");
@@ -164,4 +233,5 @@ public class MainActivity extends AppCompatActivity {
                                         .build(),
                 RC_SIGN_IN);
     }
+
 }
