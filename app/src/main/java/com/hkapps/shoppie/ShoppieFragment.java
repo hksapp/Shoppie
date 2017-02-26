@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
@@ -15,7 +16,7 @@ import android.widget.Toast;
  */
 public class ShoppieFragment extends Fragment {
 
-private Button button;
+    private Button button;
     public ShoppieFragment() {
         // Required empty public constructor
     }

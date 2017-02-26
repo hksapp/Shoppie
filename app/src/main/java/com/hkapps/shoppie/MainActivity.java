@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "MainActivity" ;
     private static final int RC_SIGN_IN = 1;
-    private Boolean isFabOpen = false;
+    public  Boolean isFabOpen = false;
     private FloatingActionButton fab,fab1,fab2;
     private TextView profile_text,circle_text;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TabLayout tabLayout;
     private Toolbar toolbar;
-    private AppBarLayout appbar;
     private ViewPager viewPager;
 
     @Override
@@ -51,16 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseAuthenticationProcess();
 
-        appbar=(AppBarLayout)findViewById(R.id.appbar);
-
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
@@ -103,13 +98,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
     public void animateFAB(){
 
         if(isFabOpen){
             viewPager.setAlpha((float) 1.0);
-            appbar.setAlpha((float) 1.0);
             tabLayout.setAlpha((float)1.0);
-
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
@@ -123,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             viewPager.setAlpha((float) 0.2);
             tabLayout.setAlpha((float)0.2);
-            appbar.setAlpha((float)0.2);
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
@@ -133,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab2.setClickable(true);
             isFabOpen = true;
             Log.d("Raj","open");
-
         }
     }
     private void setupViewPager(ViewPager viewPager) {

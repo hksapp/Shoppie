@@ -26,7 +26,6 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             app:tabGravity="fill"
             app:tabMode="fixed"/>
     </android.support.design.widget.AppBarLayout>
@@ -39,6 +38,7 @@
 
     <include android:id="@+id/include"
         layout="@layout/content_main" />
+
     <TextView
         android:id="@+id/textView_profile"
         android:layout_width="wrap_content"
@@ -49,7 +49,6 @@
         android:layout_marginRight="@dimen/fab_margin"
         android:background="@null"
         android:text="Profile"
-
         android:textColor="#747474"
         android:textSize="22dp"
         android:visibility="invisible"
