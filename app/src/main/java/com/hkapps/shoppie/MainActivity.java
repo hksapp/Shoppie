@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void animateFAB(){
 
         if(isFabOpen){
-            viewPager.setAlpha((float) 1.0);
-            tabLayout.setAlpha((float)1.0);
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
@@ -115,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("Raj", "close");
 
         } else {
-            viewPager.setAlpha((float) 0.2);
-            tabLayout.setAlpha((float)0.2);
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
