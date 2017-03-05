@@ -16,7 +16,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
         android:scrollbars="none"/>
@@ -34,7 +34,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Create a list!"
         android:textSize="18sp"
         android:paddingLeft="22dp"
