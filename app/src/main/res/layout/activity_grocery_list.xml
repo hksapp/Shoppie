@@ -9,9 +9,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:gravity="bottom"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.hkapps.shoppie.GroceryList">
+    tools:context="com.hkapps.shoppie.PersonalGroceryList">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:scrollbars="none"/>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_marginLeft="2dp"
@@ -24,12 +34,14 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:hint="Create a list!"
         android:textSize="18sp"
-        android:layout_gravity="bottom"
         android:paddingLeft="22dp"
         android:elevation="22dp"
         android:id="@+id/create_list"/>
+
+
+
 
 </LinearLayout>

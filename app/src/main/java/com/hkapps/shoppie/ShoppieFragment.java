@@ -48,7 +48,7 @@ public class ShoppieFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getActivity(),GroceryList.class);
+                Intent i = new Intent(getActivity(),PersonalGroceryList.class);
                 startActivity(i);
 
             }

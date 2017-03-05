@@ -77,19 +77,19 @@ public class DetailGroceryList extends AppCompatActivity {
 
     }
 
-    private String getUserId(){
+    public static String getUserId(){
 
         return FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
     }
 
-    private String getUserEmailId(){
+    public static String getUserEmailId(){
 
         return FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
 
     }
 
-    private String getUserDisplayName(){
+    public static String getUserDisplayName(){
 
         return FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
 
