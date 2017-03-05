@@ -35,7 +35,7 @@ viewHolder.edt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
         if(!b){
 
-            DatabaseReference edtUpdateRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("ListID");
+            DatabaseReference edtUpdateRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(DetailGroceryList.pushid).child("items");
 
             edtUpdateRef.child(item_key).child("itemname").setValue(viewHolder.edt.getText().toString());
         }
