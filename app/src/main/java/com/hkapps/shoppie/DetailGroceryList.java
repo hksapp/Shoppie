@@ -10,8 +10,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class DetailGroceryList extends AppCompatActivity {
 
@@ -34,7 +37,15 @@ public class DetailGroceryList extends AppCompatActivity {
 
          listRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List");
 
-        pushid = listRef.push().getKey();
+if(getIntent().getStringExtra("list_id")!=null)
+{
+    pushid = getIntent().getStringExtra("list_id").toString();
+
+}else {
+    pushid = listRef.push().getKey();
+
+}
+
 
 
 
@@ -45,6 +56,20 @@ public class DetailGroceryList extends AppCompatActivity {
 
                     listRef.child(pushid).child("title").setValue(title.getText().toString());
                 }
+            }
+        });
+
+        listRef.child(pushid).child("title").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+if(dataSnapshot.exists()) {
+    title.setText(dataSnapshot.getValue().toString());
+}
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 

@@ -2,7 +2,6 @@ package com.hkapps.shoppie;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,11 +31,7 @@ public class PersonalGroceryList extends AppCompatActivity {
 
 
         create_list = (TextView) findViewById(R.id.create_list);
-        line =(TextView)findViewById(R.id.text_line);
-        line.bringToFront();
-        create_list.bringToFront();
-        ViewCompat.setTranslationZ(line,99);
-        ViewCompat.setTranslationZ(create_list,99);
+
         OpenDetailGroceryList();
 
 
