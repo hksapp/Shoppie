@@ -38,7 +38,7 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
         final String list_id = getRef(position).getKey().toString();
 
-        viewHolder.personal_title.setOnClickListener(new View.OnClickListener() {
+        viewHolder.Plist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

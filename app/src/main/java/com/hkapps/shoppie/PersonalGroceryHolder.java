@@ -2,6 +2,7 @@ package com.hkapps.shoppie;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -10,6 +11,7 @@ import android.widget.TextView;
 public class PersonalGroceryHolder extends RecyclerView.ViewHolder {
 
     public TextView personal_title;
+    public LinearLayout Plist;
     public TextView item0;
     public TextView item1;
     public TextView item2;
@@ -21,6 +23,7 @@ public class PersonalGroceryHolder extends RecyclerView.ViewHolder {
         item0 = (TextView) itemView.findViewById(R.id.item0);
         item1 = (TextView) itemView.findViewById(R.id.item1);
         item2 = (TextView) itemView.findViewById(R.id.item2);
+        Plist = (LinearLayout) itemView.findViewById(R.id.Plist);
 
     }
 
