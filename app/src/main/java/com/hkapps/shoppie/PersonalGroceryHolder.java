@@ -10,11 +10,18 @@ import android.widget.TextView;
 public class PersonalGroceryHolder extends RecyclerView.ViewHolder {
 
     public TextView personal_title;
+    public TextView item0;
+    public TextView item1;
+    public TextView item2;
 
     public PersonalGroceryHolder(View itemView) {
         super(itemView);
 
         personal_title = (TextView) itemView.findViewById(R.id.personal_title);
+        item0 = (TextView) itemView.findViewById(R.id.item0);
+        item1 = (TextView) itemView.findViewById(R.id.item1);
+        item2 = (TextView) itemView.findViewById(R.id.item2);
+
     }
 
 

@@ -25,6 +25,7 @@ public class DetailGroceryList extends AppCompatActivity {
     private DatabaseReference childRef;
     public static String pushid;
     private DatabaseReference listRef;
+    private long itemcount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +63,9 @@ if(getIntent().getStringExtra("list_id")!=null)
         listRef.child(pushid).child("title").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-if(dataSnapshot.exists()) {
-    title.setText(dataSnapshot.getValue().toString());
-}
+        if(dataSnapshot.exists()) {
+            title.setText(dataSnapshot.getValue().toString());
+        }
             }
 
             @Override
@@ -78,8 +79,20 @@ if(dataSnapshot.exists()) {
             @Override
             public void onClick(View view) {
 
+                listRef.child(pushid).child("items").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                listRef.child(pushid).child("items").push().child("itemname").setValue("Item name ");
+                      itemcount =  dataSnapshot.getChildrenCount();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                listRef.child(pushid).child("items").child("item"+itemcount).child("itemname").setValue("");
 
 
                 mGroceryAdapter.notifyDataSetChanged();
