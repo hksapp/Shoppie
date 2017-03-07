@@ -1,13 +1,11 @@
 package com.hkapps.shoppie;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 
 /**
@@ -15,7 +13,6 @@ import android.widget.Button;
  */
 public class ShoppieFragment extends Fragment {
 
-    private Button groceries_button;
 
     public ShoppieFragment() {
         // Required empty public constructor
@@ -29,30 +26,8 @@ public class ShoppieFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_one, container, false);
 
 
-         groceries_button = (Button) rootview.findViewById(R.id.groceries_button);
-
-
-        OpenGroceryList();
-
-
-
-
 
         return rootview;
-    }
-
-
-    private void OpenGroceryList(){
-
-        groceries_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent i = new Intent(getActivity(),PersonalGroceryList.class);
-                startActivity(i);
-
-            }
-        });
     }
 
 }
