@@ -2,14 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="6dp"
+
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/chkbox"
+        android:layout_height="wrap_content"
+        />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="4"
         android:id="@+id/edt"
+
         android:lines="1"
         android:maxLines="1"
         android:hint="Item Name"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/deleteIcon"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_forever_black_24dp"
+
+        />
 
 </LinearLayout>

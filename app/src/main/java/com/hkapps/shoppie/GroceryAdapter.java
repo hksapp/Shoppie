@@ -27,7 +27,24 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
 
         viewHolder.edt.setText(model.getItemname());
 
+
+        viewHolder.chkbox.setChecked(model.isCheck());
+
         final String item_key = getRef(position).getKey().toString();
+
+
+        viewHolder.chkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                DatabaseReference chkboxRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(DetailGroceryList.pushid).child("items");
+
+                chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
+
+            }
+        });
+
 
 viewHolder.edt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
     @Override
