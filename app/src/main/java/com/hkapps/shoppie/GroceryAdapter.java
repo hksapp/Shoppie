@@ -33,6 +33,15 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
         final String item_key = getRef(position).getKey().toString();
 
 
+
+        viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
         viewHolder.chkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -52,29 +52,28 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
 
         DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(DetailGroceryList.getUserId()).child("List").child(list_id).child("items");
-        itemsRef.addValueEventListener(new ValueEventListener() {
+        itemsRef.orderByKey().limitToFirst(3).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("item0").exists()) {
-                    viewHolder.item0.setText(dataSnapshot.child("item0").child("itemname").getValue().toString());
 
-                    if (dataSnapshot.child("item1").exists()) {
-
-                        viewHolder.item1.setText(dataSnapshot.child("item1").child("itemname").getValue().toString());
-
-                        if (dataSnapshot.child("item2").exists()) {
-
-                            viewHolder.item2.setText(dataSnapshot.child("item2").child("itemname").getValue().toString());
+                int i =0;
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
 
-                        }
-
+                    switch (i){
+                        case 0:  viewHolder.item0.setText(dsp.child("itemname").getValue().toString());
+                            break;
+                        case 1:  viewHolder.item1.setText(dsp.child("itemname").getValue().toString());
+                            break;
+                        case 2:  viewHolder.item2.setText(dsp.child("itemname").getValue().toString());
+                            break;
 
                     }
+                    i++;
+
 
 
                 }
-
 
             }
 
