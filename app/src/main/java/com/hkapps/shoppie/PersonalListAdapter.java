@@ -1,6 +1,8 @@
 package com.hkapps.shoppie;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 
@@ -50,6 +52,8 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
         });
 
 
+
+
         DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(DetailGroceryList.getUserId()).child("List").child(list_id).child("items");
         itemsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,6 +86,46 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
             }
         });
+
+
+
+        viewHolder.Plist.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+              final AlertDialog.Builder alert = new AlertDialog.Builder(
+                        context);
+                alert.setTitle("Confirm Deletion");
+                alert.setMessage("Are you sure to delete List");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do your work here
+                        DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference().child("Users").child(DetailGroceryList.getUserId()).child("List").child(list_id);
+
+                        deleteRef.removeValue();
+
+                        dialog.dismiss();
+
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+            alert.show();
+
+                return true;
+            }
+        });
+
 
 
     }
