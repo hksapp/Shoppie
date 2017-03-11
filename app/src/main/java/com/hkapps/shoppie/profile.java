@@ -25,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -34,17 +35,19 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
     private ImageView imageview;
     private Uri filePath;
     private StorageReference mStorageRef;
+    private DatabaseReference ref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
          mailid =(TextView)findViewById(R.id.mailid);
         username=(TextView)findViewById(R.id.username);
-        imageview =(ImageView)findViewById(R.id.userimage);
-        imageview.setOnClickListener(this);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         final FirebaseDatabase database= FirebaseDatabase.getInstance();
-        DatabaseReference ref=database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+
+
+        ref=database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -58,7 +61,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
-
+        putImageView();
     }
      @Override
      protected void onActivityResult(int requestCode,int resultCode,Intent data){
@@ -80,7 +83,24 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(i,"select picture"),PICK_IMAGE_REQUEST);
     }
+private void putImageView(){
+    imageview =(ImageView)findViewById(R.id.userimage);
+    ref.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
 
+            String url= dataSnapshot.child("userImageUrl").getValue().toString();
+            Picasso.with(profile.this).load(url).fit().centerCrop().into(imageview);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+    imageview.setOnClickListener(this);
+
+}
 private void uploadFile(){
     if(filePath!=null){
     final ProgressDialog progressDialog=new ProgressDialog(this);
@@ -92,7 +112,8 @@ private void uploadFile(){
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 //hiding the progress dialog
                 progressDialog.dismiss();
-
+                @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                ref.child("userImageUrl").setValue(downloadUrl.toString());
                 //and displaying a success toast
                 Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
 
@@ -106,16 +127,16 @@ private void uploadFile(){
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 
             }
-        });/*.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                @SuppressWarnings("VisibleForTests") double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
                 //displaying percentage in progress dialog
                 progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
 
             }
-        })*/
+        });
 
     }
 }
