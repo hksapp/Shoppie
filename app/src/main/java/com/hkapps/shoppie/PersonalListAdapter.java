@@ -1,7 +1,9 @@
 package com.hkapps.shoppie;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -11,11 +13,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.hkapps.shoppie.DetailGroceryList.getUserId;
+
 /**
  * Created by kamal on 06-03-2017.
  */
 public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGroceryObject, PersonalGroceryHolder> {
     private Context context;
+    private DatabaseReference delRef;
 
     /**
      * @param modelClass      Firebase will marshall the data at a location into an instance of a class that you provide
@@ -51,7 +56,8 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
 
 
-        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(DetailGroceryList.getUserId()).child("List").child(list_id).child("items");
+
+        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(list_id).child("items");
         itemsRef.orderByKey().limitToFirst(3).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -92,45 +98,47 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
 
 
-
-        /*viewHolder.Plist.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.Plist.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
-
-               AlertDialog.Builder alert = new AlertDialog.Builder(
-                        context);
-                alert.setTitle("Confirm Deletion");
-                alert.setMessage("Are you sure to delete List");
-                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                AlertDialog.Builder alertD = new AlertDialog.Builder(view.getContext());
+                alertD.setTitle("Grocery List");
+                alertD.setMessage("Delete this list ?");
+                alertD.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //do your work here
-                        DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference().child("Users").child(DetailGroceryList.getUserId()).child("List").child(list_id);
-
-                        deleteRef.removeValue();
-
                         dialog.dismiss();
+                        delRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(list_id);
+                        delRef.removeValue();
+
 
                     }
                 });
-                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                alertD.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+
+
+
                         dialog.dismiss();
+
+
                     }
                 });
 
-            alert.show();
+                alertD.show();
+                return true;
 
-                return false;
             }
         });
 
-*/
+
+
 
 
 
