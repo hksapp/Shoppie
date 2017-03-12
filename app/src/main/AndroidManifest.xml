@@ -11,27 +11,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".MainActivity"
-
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PersonalGroceryList"
+            android:label="Groceries"/>
+        <activity android:name=".DetailGroceryList"
+
+
+            ></activity>
 
         <activity android:name=".profile" />
         <activity android:name=".circle"></activity>
