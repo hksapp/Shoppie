@@ -27,12 +27,11 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PersonalGroceryList"
-            android:label="Groceries"/>
-        <activity android:name=".DetailGroceryList"
-
-
-            ></activity>
+        <activity
+            android:name=".PersonalGroceryList"
+            android:label="Groceries" />
+        <activity android:name=".DetailGroceryList" />
+        <activity android:name=".PersonalMedicinesList"></activity>
     </application>
 
 </manifest>

@@ -181,6 +181,7 @@
                         android:layout_height="34dp"
                         android:layout_margin="22dp"
                         android:background="#fff176"
+                        android:id="@+id/medicines_button"
                         android:text="Explore the list"
                         android:textAllCaps="false" />
 
@@ -268,7 +269,7 @@
                         android:layout_margin="22dp"
                         android:background="#fff176"
                         android:text="Explore the list"
-
+                        android:id="@+id/mallitems_button"
                         android:textAllCaps="false" />
 
                 </LinearLayout>
