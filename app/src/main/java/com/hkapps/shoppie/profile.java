@@ -1,7 +1,9 @@
 package com.hkapps.shoppie;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -19,7 +21,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +43,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class profile extends AppCompatActivity implements View.OnClickListener {
+public class profile extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int PICK_IMAGE_REQUEST = 234;
     private TextView mailid,username;
     private ImageView imageview;
@@ -79,6 +83,9 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         ImageView mImage = (ImageView) findViewById(R.id.userimage);
         mImage.setImageBitmap(getCircleBitmap(bm));*/
         putImageView();
+        Switch s=(Switch)findViewById(R.id.location_switch);
+        s.setOnCheckedChangeListener(profile.this);
+
     }
      @Override
      protected void onActivityResult(int requestCode,int resultCode,Intent data){
@@ -191,5 +198,25 @@ private void uploadFile(){
         else if (view == buttonUpload) {
 
         }*/
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        int isenabled;
+        SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        if(b) {
+            isenabled=1;
+
+        } else {
+            isenabled=0;
+        }
+        editor.putInt("location_preference", isenabled);
+        editor.commit();
+
+        int myIntValue = sp.getInt("location_preference", -1);
+        String s;
+        s=String.valueOf(myIntValue);
+        Toast.makeText(profile.this,s , Toast.LENGTH_SHORT).show();
     }
 }
