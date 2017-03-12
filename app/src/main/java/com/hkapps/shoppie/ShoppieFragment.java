@@ -54,13 +54,7 @@ public class ShoppieFragment extends Fragment {
 
             }
         });
-        medicines_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(),PersonalMedicinesList.class);
-                startActivity(i);
-            }
-        });
+
     }
 
 }
