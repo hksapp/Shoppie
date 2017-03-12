@@ -20,9 +20,11 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +52,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
     private Uri filePath;
     private StorageReference mStorageRef;
     private DatabaseReference ref;
-
+   /* boolean isImageFitToScreen=false;*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +136,13 @@ if(dataSnapshot.child("userImageUrl").exists()) {
         }
     });
     imageview.setOnClickListener(this);
-
+    imageview.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            showFileChooser();
+            return false;
+        }
+    });
 }
   /*  private Bitmap getCircleBitmap(Bitmap bitmap) {
         final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
@@ -202,7 +210,15 @@ private void uploadFile(){
     public void onClick(View view) {
         //if the clicked button is choose
         if (view == imageview) {
-            showFileChooser();
+           /* if(isImageFitToScreen) {
+                isImageFitToScreen=false;
+                imageview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                imageview.setAdjustViewBounds(true);
+            }else{
+                isImageFitToScreen=true;
+                imageview.setLayoutParams(new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.MATCH_PARENT));
+                imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+            }*/
         }
        /* //if the clicked button is upload
         else if (view == buttonUpload) {

@@ -13,6 +13,7 @@
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="0dp">
     <TextView
+        android:id="@+id/add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -20,10 +21,11 @@
         android:textColor="@android:color/white"
         android:textSize="22sp"/>
     <EditText
+        android:id="@+id/gmailid_circle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="enter mail Id / username"
-        android:textColorHint="@android:color/white"
+        android:textColorHint="@android:color/secondary_text_dark"
         />
 </LinearLayout>
 
