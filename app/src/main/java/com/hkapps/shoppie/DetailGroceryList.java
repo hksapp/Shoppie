@@ -79,20 +79,8 @@ if(getIntent().getStringExtra("list_id")!=null)
             @Override
             public void onClick(View view) {
 
-                listRef.child(pushid).child("items").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                      itemcount =  dataSnapshot.getChildrenCount();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                listRef.child(pushid).child("items").child("item"+itemcount).child("itemname").setValue("");
+                listRef.child(pushid).child("items").push().child("itemname").setValue("");
 
 
                 mGroceryAdapter.notifyDataSetChanged();

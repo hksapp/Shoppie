@@ -15,7 +15,7 @@ import android.widget.Button;
  */
 public class ShoppieFragment extends Fragment {
 
-    private Button groceries_button;
+    private Button groceries_button,medicines_button;
 
     public ShoppieFragment() {
         // Required empty public constructor
@@ -30,6 +30,7 @@ public class ShoppieFragment extends Fragment {
 
 
         groceries_button = (Button) rootview.findViewById(R.id.groceries_button);
+        medicines_button = (Button) rootview.findViewById(R.id.medicines_button);
 
 
         OpenGroceryList();
@@ -51,6 +52,13 @@ public class ShoppieFragment extends Fragment {
                 Intent i = new Intent(getActivity(),PersonalGroceryList.class);
                 startActivity(i);
 
+            }
+        });
+        medicines_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(),PersonalMedicinesList.class);
+                startActivity(i);
             }
         });
     }

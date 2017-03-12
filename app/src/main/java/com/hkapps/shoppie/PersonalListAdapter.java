@@ -1,7 +1,9 @@
 package com.hkapps.shoppie;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -11,11 +13,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.hkapps.shoppie.DetailGroceryList.getUserId;
+
 /**
  * Created by kamal on 06-03-2017.
  */
 public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGroceryObject, PersonalGroceryHolder> {
     private Context context;
+    private DatabaseReference delRef;
 
     /**
      * @param modelClass      Firebase will marshall the data at a location into an instance of a class that you provide
@@ -50,30 +55,31 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
         });
 
 
-        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(DetailGroceryList.getUserId()).child("List").child(list_id).child("items");
-        itemsRef.addValueEventListener(new ValueEventListener() {
+
+
+        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(list_id).child("items");
+        itemsRef.orderByKey().limitToFirst(3).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("item0").exists()) {
-                    viewHolder.item0.setText(dataSnapshot.child("item0").child("itemname").getValue().toString());
 
-                    if (dataSnapshot.child("item1").exists()) {
-
-                        viewHolder.item1.setText(dataSnapshot.child("item1").child("itemname").getValue().toString());
-
-                        if (dataSnapshot.child("item2").exists()) {
-
-                            viewHolder.item2.setText(dataSnapshot.child("item2").child("itemname").getValue().toString());
+                int i =0;
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
 
-                        }
-
+                    switch (i){
+                        case 0:  viewHolder.item0.setText(dsp.child("itemname").getValue().toString());
+                            break;
+                        case 1:  viewHolder.item1.setText(dsp.child("itemname").getValue().toString());
+                            break;
+                        case 2:  viewHolder.item2.setText(dsp.child("itemname").getValue().toString());
+                            break;
 
                     }
+                    i++;
+
 
 
                 }
-
 
             }
 
@@ -84,7 +90,57 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
         });
 
 
-    }
 
 
-}
+
+
+
+
+
+
+        viewHolder.Plist.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                AlertDialog.Builder alertD = new AlertDialog.Builder(view.getContext());
+                alertD.setTitle("Grocery List");
+                alertD.setMessage("Delete this list ?");
+                alertD.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do your work here
+                        dialog.dismiss();
+                        delRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(list_id);
+                        delRef.removeValue();
+
+
+                    }
+                });
+                alertD.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+
+
+                        dialog.dismiss();
+
+
+                    }
+                });
+
+                alertD.show();
+                return true;
+
+            }
+        });
+
+
+
+
+
+
+
+}}
