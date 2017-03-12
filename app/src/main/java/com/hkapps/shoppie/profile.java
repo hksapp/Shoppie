@@ -84,6 +84,16 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         mImage.setImageBitmap(getCircleBitmap(bm));*/
         putImageView();
         Switch s=(Switch)findViewById(R.id.location_switch);
+        SharedPreferences sp=getSharedPreferences("your_prefs",Activity.MODE_PRIVATE);
+        int myIntValue = sp.getInt("location_preference", -1);
+        if(myIntValue==1)
+        {
+            s.setChecked(true);
+        }
+        else if (myIntValue==0)
+        {
+            s.setChecked(false);
+        }
         s.setOnCheckedChangeListener(profile.this);
 
     }
@@ -214,9 +224,6 @@ private void uploadFile(){
         editor.putInt("location_preference", isenabled);
         editor.commit();
 
-        int myIntValue = sp.getInt("location_preference", -1);
-        String s;
-        s=String.valueOf(myIntValue);
-        Toast.makeText(profile.this,s , Toast.LENGTH_SHORT).show();
+
     }
 }
