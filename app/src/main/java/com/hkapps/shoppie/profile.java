@@ -3,6 +3,12 @@ package com.hkapps.shoppie;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -62,6 +68,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
             }
         });
         putImageView();
+
     }
      @Override
      protected void onActivityResult(int requestCode,int resultCode,Intent data){
@@ -88,9 +95,10 @@ private void putImageView(){
     ref.addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-
-            String url= dataSnapshot.child("userImageUrl").getValue().toString();
-            Picasso.with(profile.this).load(url).fit().centerCrop().into(imageview);
+if(dataSnapshot.child("userImageUrl").exists()) {
+    String url = dataSnapshot.child("userImageUrl").getValue().toString();
+    Picasso.with(profile.this).load(url).fit().centerCrop().into(imageview);
+}
         }
 
         @Override
