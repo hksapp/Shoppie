@@ -19,6 +19,7 @@ public class circle extends AppCompatActivity {
     private DatabaseReference ref,ref2;
     private String gmail;
     private EditText gmailid_circle;
+    private int value=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,23 +33,28 @@ public class circle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gmail=gmailid_circle.getText().toString();
-                /*database=FirebaseDatabase.getInstance();
-                ref2=database.getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+                database=FirebaseDatabase.getInstance();
+                ref2=database.getReference().child("Users");
+
+                ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot:dataSnapshot.getChildren()){
-                            if(snapshot.child("email").getValue().toString().equals(gmail))
-                            {    ref.child(gmail).child("username").setValue("vamshi krishna");}
-                        }
+                            if(gmail.equals(snapshot.child("email").getValue().toString()))
+                            {
+                                ref.child(snapshot.getKey()).child("username").setValue(snapshot.child("username").getValue());
+                                value=1;
+                            }
+                            }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });*/
-                ref.child(gmail).child("username").setValue("vamshi krishna");
-                Toast.makeText(circle.this, gmail, Toast.LENGTH_SHORT).show();
+                });
+                if(value==0)
+                    Toast.makeText(circle.this, "invalid mailid/not exists", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.hkapps.shoppie.circle">
 <LinearLayout
     android:layout_width="match_parent"
@@ -28,5 +29,8 @@
         android:textColorHint="@android:color/secondary_text_dark"
         />
 </LinearLayout>
-
+<android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</android.support.v7.widget.RecyclerView>
 </LinearLayout>

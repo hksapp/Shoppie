@@ -26,15 +26,8 @@ public class PersonalGroceryList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
-
-
-
-
         create_list = (TextView) findViewById(R.id.create_list);
-
         OpenDetailGroceryList();
-
-
         linearLayoutManager = new LinearLayoutManager(this);
         listRecyclerview = (RecyclerView) findViewById(R.id.list_recycler_view);
         listRecyclerview.setHasFixedSize(true);
