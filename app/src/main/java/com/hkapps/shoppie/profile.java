@@ -5,30 +5,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,18 +34,20 @@ import java.io.IOException;
 
 public class profile extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int PICK_IMAGE_REQUEST = 234;
-    private TextView mailid,username;
+    private TextView mailid,username,noofmembers;
     private ImageView imageview;
     private Uri filePath;
     private StorageReference mStorageRef;
-    private DatabaseReference ref;
+    private DatabaseReference ref,ref2;
    /* boolean isImageFitToScreen=false;*/
+   private int circleCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
          mailid =(TextView)findViewById(R.id.mailid);
         username=(TextView)findViewById(R.id.username);
+        noofmembers=(TextView)findViewById(R.id.circleCount);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         final FirebaseDatabase database= FirebaseDatabase.getInstance();
 
@@ -70,6 +59,22 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
 
                 mailid.setText(dataSnapshot.child("email").getValue().toString());
                 username.setText(dataSnapshot.child("username").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        ref2=ref.child("Circle");
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                circleCount=0;
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    circleCount++;
+                }
+                noofmembers.setText(String.valueOf(circleCount));
             }
 
             @Override
