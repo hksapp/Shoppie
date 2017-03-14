@@ -81,7 +81,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         Bitmap bm = BitmapFactory.decodeResource(getResources(),
                 R.drawable.splash4);
 
-        // set circle bitmap
+        // set Circle bitmap
         ImageView mImage = (ImageView) findViewById(R.id.userimage);
         mImage.setImageBitmap(getCircleBitmap(bm));*/
         putImageView();

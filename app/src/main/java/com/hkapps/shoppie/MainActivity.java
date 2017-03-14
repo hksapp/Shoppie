@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, circle.class);
+                Intent myIntent = new Intent(MainActivity.this, Circle.class);
                 startActivity(myIntent);
             }
         });
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab1:
 
-                Log.d("circle", "Fab 1");
+                Log.d("Circle", "Fab 1");
                 break;
             case R.id.fab2:
 
