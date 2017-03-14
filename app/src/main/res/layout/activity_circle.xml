@@ -31,6 +31,6 @@
     android:id="@+id/showuser_incircle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:scrollbars="vertical">
+    android:scrollbars="none">
 </android.support.v7.widget.RecyclerView>
 </LinearLayout>

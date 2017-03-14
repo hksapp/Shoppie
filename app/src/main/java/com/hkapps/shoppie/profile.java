@@ -120,7 +120,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         startActivityForResult(Intent.createChooser(i,"select picture"),PICK_IMAGE_REQUEST);
     }
 private void putImageView(){
-    imageview =(ImageView)findViewById(R.id.userimage);
+    imageview =(ImageView)findViewById(R.id.userImageUrl);
     ref.addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -171,7 +171,7 @@ private void uploadFile(){
     final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Uploading");
         progressDialog.show();
-        StorageReference userimage=mStorageRef.child("images/username.jpg");
+        StorageReference userimage=mStorageRef.child("images/"+DetailGroceryList.getUserId().toString()+".jpg");
         userimage.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

@@ -14,11 +14,13 @@ import org.w3c.dom.Text;
 public class CircleHolder extends RecyclerView.ViewHolder {
     private static final String TAG =CircleHolder.class.getSimpleName();
     public TextView userName,mailId;
-    public ImageView userimage;
+    public ImageView userimage,removeUserFromList;
     public CircleHolder(View itemView) {
         super(itemView);
         userName=(TextView)itemView.findViewById(R.id.username_incirclelist);
         mailId=(TextView)itemView.findViewById(R.id.gmail_id_incircle_list);
         userimage=(ImageView)itemView.findViewById(R.id.userimage_incirclelist);
+        removeUserFromList=(ImageView)itemView.findViewById(R.id.remove_from_circle);
     }
+
 }

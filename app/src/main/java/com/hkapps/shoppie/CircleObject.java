@@ -1,21 +1,19 @@
 package com.hkapps.shoppie;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by vamshi on 14-03-2017.
  */
 
 public class CircleObject {
-    private String username, gmail,userimage;
+    private String username, email, userImageUrl;
     public CircleObject(){
 
 
     }
-    public CircleObject(String username, String gmail, String userimage) {
+    public CircleObject(String username, String email, String userImageUrl) {
         this.username = username;
-        this.gmail = gmail;
-        this.userimage = userimage;
+        this.email = email;
+        this.userImageUrl = userImageUrl;
     }
 
     public String getUsername() {
@@ -26,19 +24,19 @@ public class CircleObject {
         this.username = username;
     }
 
-    public String getUserimage() {
-        return userimage;
+    public String getUserImageUrl() {
+        return userImageUrl;
     }
 
-    public void setUserimage(String userimage) {
-        this.userimage = userimage;
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
     }
 
-    public String getGmail() {
-        return gmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setGmail(String gmail) {
-        this.gmail = gmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

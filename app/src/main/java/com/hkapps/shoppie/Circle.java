@@ -45,7 +45,6 @@ public class Circle extends AppCompatActivity {
         setContentView(R.layout.activity_circle);
         database= FirebaseDatabase.getInstance();
         gmailid_circle=(EditText)findViewById(R.id.gmailid_circle);
-
         ref=database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Circle");
         TextView adduser=(TextView)findViewById(R.id.add_user);
         adduser.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +89,7 @@ public class Circle extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         childRef = mDatabaseRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Circle");
-        cAdapter = new CircleAdapter(CircleObject.class, R.layout.activity_circle, CircleHolder.class, childRef, getApplicationContext());
+        cAdapter = new CircleAdapter(CircleObject.class, R.layout.activity_circle_list, CircleHolder.class, childRef, getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(cAdapter);
         /*prepareCircleData();*/

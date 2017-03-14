@@ -1,19 +1,14 @@
 package com.hkapps.shoppie;
 
 import android.content.Context;
-import android.media.Image;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import static com.hkapps.shoppie.DetailGroceryList.getUserId;
 
 /**
  * Created by vamshi on 14-03-2017.
@@ -30,8 +25,16 @@ public class CircleAdapter extends FirebaseRecyclerAdapter<CircleObject,CircleHo
     @Override
     protected void populateViewHolder(CircleHolder viewHolder, CircleObject model, int position) {
         viewHolder.userName.setText(model.getUsername());
-        viewHolder.mailId.setText(model.getGmail());
-        Picasso.with(context).load(model.getUserimage()).fit().centerCrop().into(viewHolder.userimage);
+        final String item_key = getRef(position).getKey().toString();
+        viewHolder.mailId.setText(model.getEmail());
+        Picasso.with(context).load(model.getUserImageUrl().toString()).into(viewHolder.userimage);
+        viewHolder.removeUserFromList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
+                deleteRef.child(item_key).removeValue();
+            }
+        });
     }
     /*
     private List<CircleObject> circleList;
@@ -60,9 +63,9 @@ public class CircleAdapter extends FirebaseRecyclerAdapter<CircleObject,CircleHo
     @Override
     public void onBindViewHolder(MyCircleHolder holder,int position){
         CircleObject circle= circleList.get(position);
-        Picasso.with(v.getContext()).load(circle.getUserimage()).fit().centerCrop().into(holder.userimage);
+        Picasso.with(v.getContext()).load(circle.getUserImageUrl()).fit().centerCrop().into(holder.userimage);
         holder.username.setText(circle.getUsername());
-        holder.mailid.setText(circle.getGmail());
+        holder.mailid.setText(circle.getEmail());
     }
 
     @Override
