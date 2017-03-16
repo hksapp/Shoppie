@@ -75,6 +75,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
                     circleCount++;
                 }
                 noofmembers.setText(String.valueOf(circleCount));
+
             }
 
             @Override
