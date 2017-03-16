@@ -54,8 +54,8 @@ nRef.keepSynced(true);
 
                 notif_id = notif_id + 1;
 
-                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket");
 
+                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket");
 
 dataSnapshot.child("seen").getRef().removeValue();
 
