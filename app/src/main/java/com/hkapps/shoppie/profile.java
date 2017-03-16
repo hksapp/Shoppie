@@ -67,14 +67,18 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
             }
         });
         ref2=ref.child("Circle");
+
+
+        noofmembers.setText(String.valueOf(circleCount));
+
+
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                circleCount=0;
-                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    circleCount++;
-                }
-                noofmembers.setText(String.valueOf(circleCount));
+
+                noofmembers.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+
+
 
             }
 
