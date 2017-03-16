@@ -36,7 +36,7 @@ public class DetailGroceryList extends AppCompatActivity {
 
 
 
-         listRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List");
+         listRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString());
 
 if(getIntent().getStringExtra("list_id")!=null)
 {
@@ -94,7 +94,7 @@ if(getIntent().getStringExtra("list_id")!=null)
         groceryRecyclerview = (RecyclerView) findViewById(R.id.grocery_recycler_view);
         groceryRecyclerview.setHasFixedSize(true);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        childRef = mDatabaseRef.child("Users").child(getUserId()).child("List").child(pushid).child("items");
+        childRef = mDatabaseRef.child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(pushid).child("items");
         mGroceryAdapter = new GroceryAdapter(GroceryObject.class, R.layout.grocery_ui, GroceryHolder.class, childRef, getApplicationContext());
         groceryRecyclerview.setLayoutManager(linearLayoutManager);
         groceryRecyclerview.setAdapter(mGroceryAdapter);

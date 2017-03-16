@@ -57,7 +57,7 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
 
 
-        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(list_id).child("items");
+        DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(list_id).child("items");
         itemsRef.orderByKey().limitToFirst(3).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

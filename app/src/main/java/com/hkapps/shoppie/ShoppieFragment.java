@@ -2,7 +2,9 @@ package com.hkapps.shoppie;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,23 @@ public class ShoppieFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent i = new Intent(getActivity(),PersonalGroceryList.class);
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor edit = sp.edit();
+                edit.putInt("source", 1);
+                edit.commit();
+                startActivity(i);
+
+            }
+        });
+
+        medicines_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),PersonalGroceryList.class);
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor edit = sp.edit();
+                edit.putInt("source", 2);
+                edit.commit();
                 startActivity(i);
 
             }
