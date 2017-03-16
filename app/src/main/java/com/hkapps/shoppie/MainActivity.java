@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     uploadUserData.child("username").setValue(user.getDisplayName().toString());
                     uploadUserData.child("userid").setValue(user.getUid().toString());
 
+                    startService(new Intent(getApplicationContext(), NotificationListener.class));
 
                 } else {
 
