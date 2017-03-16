@@ -3,7 +3,7 @@ package com.hkapps.shoppie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class circle extends AppCompatActivity {
+public class Circle extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
