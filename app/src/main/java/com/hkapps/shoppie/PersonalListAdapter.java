@@ -61,11 +61,8 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
         itemsRef.orderByKey().limitToFirst(3).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 int i =0;
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-
                     switch (i){
                         case 0:  viewHolder.item0.setText(dsp.child("itemname").getValue().toString());
                             break;

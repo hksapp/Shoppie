@@ -1,24 +1,21 @@
 package com.hkapps.shoppie;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,20 +32,22 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class profile extends AppCompatActivity implements View.OnClickListener {
+public class profile extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int PICK_IMAGE_REQUEST = 234;
-    private TextView mailid,username;
+    private TextView mailid,username,noofmembers;
     private ImageView imageview;
     private Uri filePath;
     private StorageReference mStorageRef;
-    private DatabaseReference ref;
-
+    private DatabaseReference ref,ref2;
+   /* boolean isImageFitToScreen=false;*/
+   private int circleCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
          mailid =(TextView)findViewById(R.id.mailid);
         username=(TextView)findViewById(R.id.username);
+        noofmembers=(TextView)findViewById(R.id.circleCount);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         final FirebaseDatabase database= FirebaseDatabase.getInstance();
 
@@ -67,7 +66,43 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
+        ref2=ref.child("Circle");
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                circleCount=0;
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    circleCount++;
+                }
+                noofmembers.setText(String.valueOf(circleCount));
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+      /*  // create bitmap from resource
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                R.drawable.splash4);
+
+        // set Circle bitmap
+        ImageView mImage = (ImageView) findViewById(R.id.userimage);
+        mImage.setImageBitmap(getCircleBitmap(bm));*/
         putImageView();
+        Switch s=(Switch)findViewById(R.id.location_switch);
+        SharedPreferences sp=getSharedPreferences("your_prefs",Activity.MODE_PRIVATE);
+        int myIntValue = sp.getInt("location_preference", -1);
+        if(myIntValue==1)
+        {
+            s.setChecked(true);
+        }
+        else if (myIntValue==0)
+        {
+            s.setChecked(false);
+        }
+        s.setOnCheckedChangeListener(profile.this);
 
     }
      @Override
@@ -91,7 +126,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         startActivityForResult(Intent.createChooser(i,"select picture"),PICK_IMAGE_REQUEST);
     }
 private void putImageView(){
-    imageview =(ImageView)findViewById(R.id.userimage);
+    imageview =(ImageView)findViewById(R.id.userImageUrl);
     ref.addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -107,14 +142,42 @@ if(dataSnapshot.child("userImageUrl").exists()) {
         }
     });
     imageview.setOnClickListener(this);
-
+    imageview.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            showFileChooser();
+            return false;
+        }
+    });
 }
+  /*  private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.RED;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }*/
 private void uploadFile(){
     if(filePath!=null){
     final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Uploading");
         progressDialog.show();
-        StorageReference userimage=mStorageRef.child("images/username.jpg");
+        StorageReference userimage=mStorageRef.child("images/"+DetailGroceryList.getUserId().toString()+".jpg");
         userimage.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -153,11 +216,36 @@ private void uploadFile(){
     public void onClick(View view) {
         //if the clicked button is choose
         if (view == imageview) {
-            showFileChooser();
+           /* if(isImageFitToScreen) {
+                isImageFitToScreen=false;
+                imageview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                imageview.setAdjustViewBounds(true);
+            }else{
+                isImageFitToScreen=true;
+                imageview.setLayoutParams(new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.MATCH_PARENT));
+                imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+            }*/
         }
        /* //if the clicked button is upload
         else if (view == buttonUpload) {
 
         }*/
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        int isenabled;
+        SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        if(b) {
+            isenabled=1;
+
+        } else {
+            isenabled=0;
+        }
+        editor.putInt("location_preference", isenabled);
+        editor.commit();
+
+
     }
 }
