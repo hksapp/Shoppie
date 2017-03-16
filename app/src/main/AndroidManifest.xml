@@ -34,7 +34,6 @@
 
 
             ></activity>
-        <activity android:name=".PersonalMedicinesList"></activity>
 
         <activity android:name=".profile" />
         <activity android:name=".circle"></activity>
