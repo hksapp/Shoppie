@@ -45,27 +45,7 @@ public class NotificationListener extends Service {
 
 
 
-     /*   nRef.orderByChild("seen").equalTo(true).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (notif_id > 30000)
-                    notif_id = 0;
-
-                notif_id = notif_id + 1;
-
-
-                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket");
-
-                dataSnapshot.child("seen").getRef().removeValue();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
         nRef.orderByChild("seen").equalTo(true).limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -77,9 +57,10 @@ public class NotificationListener extends Service {
                 notif_id = notif_id + 1;
 
 
-                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket");
+                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket",dataSnapshot.child("list_ref").getValue().toString());
 
                       dataSnapshot.child("seen").getRef().removeValue();
+
 
             }
 
@@ -114,7 +95,7 @@ public class NotificationListener extends Service {
         return START_STICKY;
     }
 
-    private void showNotifications(String username,  String reacted) {
+    private void showNotifications(String username,  String reacted,String list_ref) {
 
         mBuilder = new NotificationCompat.Builder(this);
 
@@ -144,10 +125,10 @@ public class NotificationListener extends Service {
         mBuilder.setAutoCancel(true);
 
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
-       // resultIntent.putExtra("notif", true);
+        Intent resultIntent = new Intent(this, DetailGroceryList.class);
+        resultIntent.putExtra("list_ref", list_ref);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(DetailGroceryList.class);
 
 // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);

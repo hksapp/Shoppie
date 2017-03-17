@@ -1,6 +1,8 @@
 package com.hkapps.shoppie;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,72 +36,143 @@ public class DetailGroceryList extends AppCompatActivity {
         Button add_item = (Button) findViewById(R.id.add_item);
         final EditText title = (EditText) findViewById(R.id.groceries_list_title);
 
+//Handling When it Comes from notification!
+        if(getIntent().getStringExtra("list_ref")!=null){
 
 
-         listRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString());
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putInt("from_notif", 1);
+            edit.commit();
 
-if(getIntent().getStringExtra("list_id")!=null)
-{
-    pushid = getIntent().getStringExtra("list_id").toString();
-
-}else {
-    pushid = listRef.push().getKey();
-
-}
+            final DatabaseReference notificatonRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getIntent().getStringExtra("list_ref").toString());
 
 
+        title.setEnabled(false);
 
 
-        title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(!b){
-
-                    listRef.child(pushid).child("title").setValue(title.getText().toString());
+            notificatonRef.child("title").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        title.setText(dataSnapshot.getValue().toString());
+                    }
                 }
-            }
-        });
 
-        listRef.child(pushid).child("title").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-        if(dataSnapshot.exists()) {
-            title.setText(dataSnapshot.getValue().toString());
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+            add_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                   notificatonRef.child("items").push().child("itemname").setValue("");
+
+
+                    mGroceryAdapter.notifyDataSetChanged();
+
+
+                }
+            });
+
+
+
+            linearLayoutManager = new LinearLayoutManager(this);
+            groceryRecyclerview = (RecyclerView) findViewById(R.id.grocery_recycler_view);
+            groceryRecyclerview.setHasFixedSize(true);
+            childRef = notificatonRef.child("items");
+            childRef.keepSynced(true);
+            mGroceryAdapter = new GroceryAdapter(GroceryObject.class, R.layout.grocery_ui, GroceryHolder.class, childRef, getApplicationContext());
+           mGroceryAdapter.notifyDataSetChanged();
+            groceryRecyclerview.setLayoutManager(linearLayoutManager);
+            groceryRecyclerview.setAdapter(mGroceryAdapter);
+
+
+
+
+
+
+
+
+
+
+        } else {
+
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putInt("from_notif", 2);
+            edit.commit();
+
+            listRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString());
+
+            if (getIntent().getStringExtra("list_id") != null) {
+                pushid = getIntent().getStringExtra("list_id").toString();
+
+            } else {
+                pushid = listRef.push().getKey();
+
+            }
+
+
+            title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (!b) {
+
+                        listRef.child(pushid).child("title").setValue(title.getText().toString());
+                    }
+                }
+            });
+
+            listRef.child(pushid).child("title").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        title.setText(dataSnapshot.getValue().toString());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+            add_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    listRef.child(pushid).child("items").push().child("itemname").setValue("");
+
+
+                    mGroceryAdapter.notifyDataSetChanged();
+
+
+                }
+            });
+
+
+            linearLayoutManager = new LinearLayoutManager(this);
+            groceryRecyclerview = (RecyclerView) findViewById(R.id.grocery_recycler_view);
+            groceryRecyclerview.setHasFixedSize(true);
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+            childRef = mDatabaseRef.child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(pushid).child("items");
+            childRef.keepSynced(true);
+            mGroceryAdapter = new GroceryAdapter(GroceryObject.class, R.layout.grocery_ui, GroceryHolder.class, childRef, getApplicationContext());
+            groceryRecyclerview.setLayoutManager(linearLayoutManager);
+            groceryRecyclerview.setAdapter(mGroceryAdapter);
+
+            Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();
+
         }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        add_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                listRef.child(pushid).child("items").push().child("itemname").setValue("");
-
-
-                mGroceryAdapter.notifyDataSetChanged();
-
-
-            }
-        });
-
-
-        linearLayoutManager = new LinearLayoutManager(this);
-        groceryRecyclerview = (RecyclerView) findViewById(R.id.grocery_recycler_view);
-        groceryRecyclerview.setHasFixedSize(true);
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        childRef = mDatabaseRef.child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(pushid).child("items");
-        mGroceryAdapter = new GroceryAdapter(GroceryObject.class, R.layout.grocery_ui, GroceryHolder.class, childRef, getApplicationContext());
-        groceryRecyclerview.setLayoutManager(linearLayoutManager);
-        groceryRecyclerview.setAdapter(mGroceryAdapter);
-
-        Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();
 
     }
 
