@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,10 +22,14 @@ public class Conversation extends AppCompatActivity {
     private ImageView send_message;
     private EditText messageTosend;
     private DatabaseReference mref,ref,ref_circle;
-    private String chatid,messageid, fireBaseUser,currentUser,getusername;
+    private String messageid, fireBaseUser,currentUser,getusername;
+    private String chatid="";
     private Boolean ismine;
-
-
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference childRef;
+    private LinearLayoutManager linearlayoutmanager;
+    private RecyclerView recyclerView;
+    private MessagingAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +42,18 @@ public class Conversation extends AppCompatActivity {
         fireBaseUser =FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         ref=FirebaseDatabase.getInstance().getReference().child("Users").child(fireBaseUser);
         ref_circle=ref;
+        if(!ismine){
+            chatid=MallItemsActivity.chatId;}
+        else {
+            chatid=fireBaseUser;}
         send_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!messageTosend.getText().toString().equals("")){
                 if(!ismine){
-                    chatid=MallItemsActivity.chatId;
                     messageid=mref.child("MallChat").child(chatid).push().getKey();
                 }
                 else {
-                    chatid=fireBaseUser;
                     messageid=mref.child("MallChat").child(chatid).push().getKey();
                     ref_circle.child("Circle").addValueEventListener(new ValueEventListener() {
                         @Override
@@ -65,8 +73,16 @@ public class Conversation extends AppCompatActivity {
                 mref.child("MallChat").child(chatid).child(messageid).child("message").setValue(messageTosend.getText().toString());
                 mref.child("MallChat").child(chatid).child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                 Toast.makeText(Conversation.this, "message sent", Toast.LENGTH_SHORT).show();
-            }
+                messageTosend.setText("");
+            }}
         });
-
+        linearlayoutmanager=new LinearLayoutManager(this);
+        recyclerView=(RecyclerView)findViewById(R.id.messaging_recyclerView);
+        recyclerView.setHasFixedSize(true);
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        childRef = mDatabaseRef.child("MallChat").child(chatid);
+        mAdapter=new MessagingAdapter(MessagingObject.class,R.layout.messaging_screen,MessagingHolder.class,childRef,getApplicationContext());
+        recyclerView.setLayoutManager(linearlayoutmanager);
+        recyclerView.setAdapter(mAdapter);
     }
 }

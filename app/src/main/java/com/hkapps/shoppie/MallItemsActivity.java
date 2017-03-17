@@ -41,8 +41,10 @@ public class MallItemsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.chats_recyclerView);
         recyclerView.setHasFixedSize(true);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
         childRef = mDatabaseRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("ActiveChats");
         chatAdapter = new ChatListAdapter(ChatListObject.class, R.layout.activity_chat_list, ChatListHolder.class, childRef, getApplicationContext());
+        chatAdapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(chatAdapter);
     }
