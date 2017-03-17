@@ -42,9 +42,31 @@ public class NotificationListener extends Service {
 
 
         DatabaseReference nRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Notifications");
-nRef.keepSynced(true);
 
-        nRef.orderByChild("seen").equalTo(true).addChildEventListener(new ChildEventListener() {
+
+
+     /*   nRef.orderByChild("seen").equalTo(true).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (notif_id > 30000)
+                    notif_id = 0;
+
+                notif_id = notif_id + 1;
+
+
+                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket");
+
+                dataSnapshot.child("seen").getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+*/
+        nRef.orderByChild("seen").equalTo(true).limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -57,7 +79,7 @@ nRef.keepSynced(true);
 
                 showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket");
 
-dataSnapshot.child("seen").getRef().removeValue();
+                      dataSnapshot.child("seen").getRef().removeValue();
 
             }
 
@@ -83,6 +105,9 @@ dataSnapshot.child("seen").getRef().removeValue();
 
 
         });
+
+
+
 
 
 
