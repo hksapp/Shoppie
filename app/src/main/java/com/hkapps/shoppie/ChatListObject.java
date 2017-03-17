@@ -5,18 +5,18 @@ package com.hkapps.shoppie;
  */
 
 public class ChatListObject {
-    private String createdBy;
+    private String username;
     ChatListObject(){
 
     }
-    ChatListObject(String createdBy){
-        this.createdBy=createdBy;
+    ChatListObject(String username){
+        this.username =username;
     }
-    public String getCreatedBy() {
-        return createdBy;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String createdBy) {
-        this.createdBy = createdBy;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MallItemsActivity extends AppCompatActivity {
-    private TextView startconv;
+    private TextView myconv;
     private DatabaseReference ref;
     static String chatId;
     private LinearLayoutManager linearLayoutManager;
@@ -28,12 +28,12 @@ public class MallItemsActivity extends AppCompatActivity {
 /*
         ref= FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("MallItems");
 */
-        startconv = (TextView)findViewById(R.id.startconversation);
-        startconv.setOnClickListener(new View.OnClickListener() {
+        myconv = (TextView)findViewById(R.id.yourconversation);
+        myconv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(MallItemsActivity.this,Conversation.class);
-                i.putExtra("IsNewConversation",true);
+                i.putExtra("IsMyConversation",true);
                 startActivity(i);
             }
         });
@@ -41,7 +41,7 @@ public class MallItemsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.chats_recyclerView);
         recyclerView.setHasFixedSize(true);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        childRef = mDatabaseRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("MallItems");
+        childRef = mDatabaseRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("ActiveChats");
         chatAdapter = new ChatListAdapter(ChatListObject.class, R.layout.activity_chat_list, ChatListHolder.class, childRef, getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(chatAdapter);

@@ -36,8 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:id="@+id/startconversation"
+            android:id="@+id/yourconversation"
             android:textColor="@android:color/white"
-            android:text="Start Conversation"/>
+            android:text="Your Conversation"/>
     </LinearLayout>
 </RelativeLayout>

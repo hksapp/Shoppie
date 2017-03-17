@@ -30,14 +30,14 @@ public class ChatListAdapter extends FirebaseRecyclerAdapter<ChatListObject,Chat
 
     @Override
     protected void populateViewHolder(ChatListHolder viewHolder, ChatListObject model, final int position) {
-        viewHolder.username.setText(model.getCreatedBy());
+        viewHolder.username.setText(model.getUsername());
         viewHolder.chatid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MallItemsActivity.chatId=getRef(position).getKey().toString();
                 Intent i = new Intent(context,Conversation.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("IsNewConversation",false);
+                i.putExtra("IsMyConversation",false);
                 context.startActivity(i);
             }
         });
