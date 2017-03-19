@@ -27,6 +27,7 @@ public class CircleAdapter extends FirebaseRecyclerAdapter<CircleObject,CircleHo
         viewHolder.userName.setText(model.getUsername());
         final String item_key = getRef(position).getKey().toString();
         viewHolder.mailId.setText(model.getEmail());
+        if(model.getUserImageUrl()!=null)
         Picasso.with(context).load(model.getUserImageUrl().toString()).into(viewHolder.userimage);
         viewHolder.removeUserFromList.setOnClickListener(new View.OnClickListener() {
             @Override
