@@ -2,6 +2,7 @@ package com.hkapps.shoppie;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.view.View;
 
@@ -46,14 +47,40 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
 
         SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
         int fromNotif = sharedPreference.getInt("from_notif", 100);
-        viewHolder.edt.setEnabled(false);
-       viewHolder.deleteIcon.setVisibility(View.GONE);
-        viewHolder.chkbox.setClickable(false);
+
+
+
+
+
+
+
+
 //fromNotif == false
 if(fromNotif==2) {
     viewHolder.deleteIcon.setVisibility(View.VISIBLE);
-    viewHolder.chkbox.setClickable(true);
+    viewHolder.chkbox.setEnabled(true);
     viewHolder.edt.setEnabled(true);
+    if(item_key.length()>getUserId().length()){
+        viewHolder.edt.setEnabled(false);
+        viewHolder.edt.setTextColor(Color.BLUE);
+
+    }
+
+}
+else {
+
+
+    viewHolder.edt.setEnabled(false);
+    viewHolder.deleteIcon.setVisibility(View.GONE);
+    viewHolder.chkbox.setEnabled(false);
+
+    if(item_key.contains(getUserId()))
+    {
+
+        viewHolder.edt.setEnabled(true);
+        viewHolder.deleteIcon.setVisibility(View.VISIBLE);
+    }
+}
     viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -136,7 +163,7 @@ edtUpdateRef.keepSynced(true);
     });
 
 
-}
+
 
     }
 
