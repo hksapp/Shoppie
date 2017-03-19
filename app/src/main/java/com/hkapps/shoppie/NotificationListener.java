@@ -46,7 +46,7 @@ public class NotificationListener extends Service {
 
 
 
-        nRef.orderByChild("seen").equalTo(true).addChildEventListener(new ChildEventListener() {
+        nRef.orderByChild("seen").equalTo(true).limitToFirst(1).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -57,11 +57,11 @@ public class NotificationListener extends Service {
 
                 notif_id = notif_id + 1;
 
-if(dataSnapshot.child("seen").exists())
-                showNotifications(dataSnapshot.child("friend_name").getValue().toString(),  "went to supermarket",dataSnapshot.child("list_ref").getValue().toString());
+if(dataSnapshot.child("seen").exists()) {
+    showNotifications(dataSnapshot.child("friend_name").getValue().toString(), "went to supermarket", dataSnapshot.child("list_ref").getValue().toString());
 
-                      dataSnapshot.child("seen").getRef().removeValue();
-
+    dataSnapshot.child("seen").getRef().removeValue();
+}
 
             }
 

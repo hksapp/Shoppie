@@ -71,7 +71,7 @@ public class DetailGroceryList extends AppCompatActivity {
                 public void onClick(View view) {
 
 
-                   notificatonRef.child("items").push().child("itemname").setValue("");
+                   notificatonRef.child("items").child(getUserId()+"_"+notificatonRef.push().getKey().toString()).child("itemname").setValue("");
 
 
                     mGroceryAdapter.notifyDataSetChanged();
