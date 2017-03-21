@@ -24,14 +24,18 @@ import java.util.Map;
 public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, GroceryHolder> {
     private static final String TAG = GroceryAdapter.class.getSimpleName();
     private Context context;
+    DatabaseReference edtUpdateRef, deleteRef;
+
     private boolean firstTimeCheck = true;
+
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
         this.context = context;
     }
+
     @Override
     protected void populateViewHolder(final GroceryHolder viewHolder, GroceryObject model, int position) {
-       // viewHolder.recipeName.setText(model.getRecipename());
+        // viewHolder.recipeName.setText(model.getRecipename());
 
 
         //   Glide.with(context).load(model.getRecipeImageUrl()).into(viewHolder.recipeImage);
@@ -42,144 +46,147 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
         viewHolder.chkbox.setChecked(model.isCheck());
 
 
-
         final String item_key = getRef(position).getKey().toString();
 
         SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
         int fromNotif = sharedPreference.getInt("from_notif", 100);
 
 
-
-
-
-
-
-
 //fromNotif == false
-if(fromNotif==2) {
-    viewHolder.deleteIcon.setVisibility(View.VISIBLE);
-    viewHolder.chkbox.setEnabled(true);
-    viewHolder.edt.setEnabled(true);
-    if(item_key.length()>getUserId().length()){
-        viewHolder.edt.setEnabled(false);
-        viewHolder.edt.setTextColor(Color.BLUE);
+        if (fromNotif == 2) {
+            viewHolder.deleteIcon.setVisibility(View.VISIBLE);
+            viewHolder.chkbox.setEnabled(true);
+            viewHolder.edt.setEnabled(true);
+            if (item_key.length() > getUserId().length()) {
+                viewHolder.edt.setEnabled(false);
+                viewHolder.edt.setTextColor(Color.BLUE);
 
-    }
+            }
 
-}
-else {
+        } else {
 
 
-    viewHolder.edt.setEnabled(false);
-    viewHolder.deleteIcon.setVisibility(View.GONE);
-    viewHolder.chkbox.setEnabled(false);
+            viewHolder.edt.setEnabled(false);
+            viewHolder.deleteIcon.setVisibility(View.GONE);
+            viewHolder.chkbox.setEnabled(false);
 
-    if(item_key.contains(getUserId()))
-    {
+            if (item_key.contains(getUserId())) {
 
-        viewHolder.edt.setEnabled(true);
-        viewHolder.deleteIcon.setVisibility(View.VISIBLE);
-    }
-}
-    viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+                viewHolder.edt.setEnabled(true);
+                viewHolder.deleteIcon.setVisibility(View.VISIBLE);
+                viewHolder.edt.setTextColor(Color.BLUE);
 
-            DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
-
-            deleteRef.child(item_key).removeValue();
-deleteRef.keepSynced(true);
+            }
         }
-    });
-
-    viewHolder.chkbox.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+        viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-            DatabaseReference chkboxRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
+                if (!DetailGroceryList.edtRef.equals("")) {
+                    deleteRef = FirebaseDatabase.getInstance().getReferenceFromUrl(DetailGroceryList.edtRef).child("items");
+
+                } else {
+                    deleteRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
+
+                }
+
+                deleteRef.child(item_key).removeValue();
+                deleteRef.keepSynced(true);
+            }
+        });
+
+        viewHolder.chkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-            chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
-            chkboxRef.keepSynced(true);
-            if (firstTimeCheck) {
+                DatabaseReference chkboxRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
 
-                DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
-notifRef.keepSynced(true);
-                notifRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        for (DataSnapshot dp : dataSnapshot.getChildren()) {
+                chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
+                chkboxRef.keepSynced(true);
+                if (firstTimeCheck) {
 
-                            DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("Notifications");
+                    DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
+                    notifRef.keepSynced(true);
+                    notifRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            notifyTheUserRef.keepSynced(true);
-                            DatabaseReference nPath = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid);
+                            for (DataSnapshot dp : dataSnapshot.getChildren()) {
 
-                            Map postdata = new HashMap();
-                            postdata.put("friend_user_id", FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                            postdata.put("friend_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
-                            postdata.put("timestamp", ServerValue.TIMESTAMP);
-                            postdata.put("seen", true);
-                            postdata.put("list_ref", nPath.getRef().toString());
+                                DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("Notifications");
 
-                            notifyTheUserRef.push().setValue(postdata);
+                                notifyTheUserRef.keepSynced(true);
+                                DatabaseReference nPath = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid);
 
+                                Map postdata = new HashMap();
+                                postdata.put("friend_user_id", FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                postdata.put("friend_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
+                                postdata.put("timestamp", ServerValue.TIMESTAMP);
+                                postdata.put("seen", true);
+                                postdata.put("list_ref", nPath.getRef().toString());
+
+                                notifyTheUserRef.push().setValue(postdata);
+
+
+                            }
 
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
 
-                    }
-                });
+
+                }
+
+
+                firstTimeCheck = false;
 
 
             }
+        });
 
 
-            firstTimeCheck = false;
+        viewHolder.edt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
 
+                if (!b) {
 
-        }
-    });
+                    if (!DetailGroceryList.edtRef.equals("")) {
+                        edtUpdateRef = FirebaseDatabase.getInstance().getReferenceFromUrl(DetailGroceryList.edtRef).child("items");
+                    } else {
+                        edtUpdateRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
 
+                    }
+                    edtUpdateRef.keepSynced(true);
+                    edtUpdateRef.child(item_key).child("itemname").setValue(viewHolder.edt.getText().toString());
+                }
 
-    viewHolder.edt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View view, boolean b) {
-
-            if (!b) {
-
-                DatabaseReference edtUpdateRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
-edtUpdateRef.keepSynced(true);
-                edtUpdateRef.child(item_key).child("itemname").setValue(viewHolder.edt.getText().toString());
             }
-
-        }
-    });
-
-
+        });
 
 
     }
 
-    private String getUserId(){
+    private String getUserId() {
 
         return FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
     }
 
-    private String getUserEmailId(){
+    private String getUserEmailId() {
 
         return FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
 
     }
 
-    private String getUserDisplayName(){
+    private String getUserDisplayName() {
 
         return FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
 

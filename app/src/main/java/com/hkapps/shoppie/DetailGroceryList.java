@@ -28,6 +28,10 @@ public class DetailGroceryList extends AppCompatActivity {
     public static String pushid;
     private DatabaseReference listRef;
     private long itemcount;
+
+    public static String edtRef ="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,8 @@ public class DetailGroceryList extends AppCompatActivity {
 
 //Handling When it Comes from notification!
         if(getIntent().getStringExtra("list_ref")!=null){
+
+            edtRef = getIntent().getStringExtra("list_ref").toString();
 
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
