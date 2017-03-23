@@ -10,7 +10,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_weight="8"
         android:id="@+id/messaging_recyclerView"
         />
     <TextView
@@ -20,7 +20,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="1"
+    android:layout_weight="2"
     android:orientation="horizontal"
     android:id="@+id/base"
     android:gravity="center">
@@ -28,6 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
+        android:id="@+id/plus"
         android:src="@drawable/ic_add_black_24dp"/>
     <EditText
         android:layout_width="0dp"
