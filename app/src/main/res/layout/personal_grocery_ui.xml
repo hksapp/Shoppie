@@ -6,7 +6,7 @@ android:elevation="10dp"
     android:padding="16dp"
     android:layout_margin="4dp"
     android:id="@+id/Plist"
-    android:background="@drawable/testrect"
+    android:background="@drawable/shadowbg"
     android:orientation="vertical">
 
     <TextView
