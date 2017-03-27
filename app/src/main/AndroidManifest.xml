@@ -36,9 +36,12 @@
             ></activity>
 
         <activity android:name=".profile" />
-        <activity android:name=".Circle"></activity>
+        <activity android:name=".Circle"/>
+        <activity android:name=".MallItemsActivity"/>
+        <activity android:name=".Conversation"/>
 
 
+        <service android:name=".NotificationListener" />
     </application>
 
 </manifest>
