@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ShoppieFragment(), "Shop");
-        adapter.addFragment(new ProfileFragment(), "Profile");
+        adapter.addFragment(new NotificationFragment(), "Profile");
         viewPager.setAdapter(adapter);
     }
 
