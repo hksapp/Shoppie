@@ -39,7 +39,6 @@
         <activity android:name=".Circle"></activity>
 
 
-        <service android:name=".NotificationListener" />
     </application>
 
 </manifest>
