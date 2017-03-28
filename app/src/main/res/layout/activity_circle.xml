@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.hkapps.shoppie.Circle">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/holo_purple"
-    android:orientation="horizontal">
-    <TextView
-        android:id="@+id/add_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/testrect"
-        android:padding="15dp"
-        android:text="Add"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"/>
-    <EditText
-        android:id="@+id/gmailid_circle"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="enter mail Id / username"
-        android:textColorHint="@android:color/secondary_text_dark"
-        />
-</LinearLayout>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/showuser_incircle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:scrollbars="none">
-</android.support.v7.widget.RecyclerView>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/testrect"
+            android:orientation="horizontal">
+
+            <EditText
+
+                android:id="@+id/gmailid_circle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:layout_weight="0.2"
+                android:hint="enter email address"
+                android:textColorHint="@android:color/secondary_text_dark" />
+
+            <TextView
+                android:id="@+id/add_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/add"
+                android:padding="4dp"
+                android:text="Add"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/showuser_incircle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</ScrollView>
 

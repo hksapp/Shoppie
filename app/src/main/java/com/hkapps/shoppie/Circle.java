@@ -1,10 +1,7 @@
 package com.hkapps.shoppie;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,10 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +25,7 @@ public class Circle extends AppCompatActivity {
     private String gmail;
     private EditText gmailid_circle;
     private int value=0;
+
     private List<CircleObject> circleList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CircleAdapter cAdapter;
@@ -41,6 +35,11 @@ public class Circle extends AppCompatActivity {
     private DatabaseReference childRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Add or remove members");
+
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_circle);
         database= FirebaseDatabase.getInstance();
