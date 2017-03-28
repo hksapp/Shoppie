@@ -45,6 +45,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Profile");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         mailid = (TextView) findViewById(R.id.mailid);
