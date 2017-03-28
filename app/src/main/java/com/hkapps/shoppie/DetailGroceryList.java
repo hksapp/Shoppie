@@ -1,5 +1,7 @@
 package com.hkapps.shoppie;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -91,11 +94,11 @@ done_shopping.setVisibility(View.GONE);
 
             linearLayoutManager = new LinearLayoutManager(this);
             groceryRecyclerview = (RecyclerView) findViewById(R.id.grocery_recycler_view);
-            groceryRecyclerview.setHasFixedSize(true);
+            /*groceryRecyclerview.setHasFixedSize(true);*/
             childRef = notificatonRef.child("items");
             childRef.keepSynced(true);
             mGroceryAdapter = new GroceryAdapter(GroceryObject.class, R.layout.grocery_ui, GroceryHolder.class, childRef, getApplicationContext());
-           mGroceryAdapter.notifyDataSetChanged();
+            mGroceryAdapter.notifyDataSetChanged();
             groceryRecyclerview.setLayoutManager(linearLayoutManager);
             groceryRecyclerview.setAdapter(mGroceryAdapter);
 
@@ -163,7 +166,7 @@ done_shopping.setVisibility(View.VISIBLE);
 
 
                     mGroceryAdapter.notifyDataSetChanged();
-
+                    hideSoftKeyboard(DetailGroceryList.this, view);
 
                 }
             });
@@ -225,7 +228,7 @@ finish();
 
             linearLayoutManager = new LinearLayoutManager(this);
             groceryRecyclerview = (RecyclerView) findViewById(R.id.grocery_recycler_view);
-            groceryRecyclerview.setHasFixedSize(true);
+            /*groceryRecyclerview.setHasFixedSize(true);*/
             mDatabaseRef = FirebaseDatabase.getInstance().getReference();
             childRef = mDatabaseRef.child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(pushid).child("items");
             childRef.keepSynced(true);
@@ -255,5 +258,10 @@ finish();
 
         return FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
 
+    }
+    public static void hideSoftKeyboard (Activity activity, View view)
+    {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

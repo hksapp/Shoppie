@@ -58,11 +58,12 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
 
         DatabaseReference itemsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(list_id).child("items");
-        itemsRef.orderByKey().limitToFirst(3).addValueEventListener(new ValueEventListener() {
+        itemsRef.orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int i =0;
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    if (!dsp.child("itemname").getValue().toString().isEmpty()){
                     switch (i){
                         case 0:  viewHolder.item0.setText(dsp.child("itemname").getValue().toString());
                             break;
@@ -73,6 +74,7 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
 
                     }
                     i++;
+                    }
 
 
 
@@ -108,7 +110,7 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
                     public void onClick(DialogInterface dialog, int which) {
                         //do your work here
                         dialog.dismiss();
-                        delRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("List").child(list_id);
+                        delRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(list_id);
                         delRef.removeValue();
 
 

@@ -111,7 +111,7 @@ public class Conversation extends AppCompatActivity {
         });
         linearlayoutmanager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.messaging_recyclerView);
-        recyclerView.setHasFixedSize(true);
+        /*recyclerView.setHasFixedSize(true);*/
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         childRef = mDatabaseRef.child("MallChat").child(chatid);
         mAdapter = new MessagingAdapter(MessagingObject.class, R.layout.messaging_screen, MessagingHolder.class, childRef, getApplicationContext());

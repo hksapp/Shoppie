@@ -22,7 +22,6 @@ android:elevation="10dp"
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item0"
         android:id="@+id/item0"
         android:textColor="#212121"
         android:textSize="20sp"/>
@@ -30,7 +29,6 @@ android:elevation="10dp"
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item1"
         android:textColor="#212121"
 
         android:id="@+id/item1"
@@ -39,7 +37,6 @@ android:elevation="10dp"
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item2"
         android:id="@+id/item2"
         android:textColor="#212121"
 

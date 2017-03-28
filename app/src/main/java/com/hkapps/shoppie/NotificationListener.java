@@ -57,11 +57,10 @@ public class NotificationListener extends Service {
 
                 notif_id = notif_id + 1;
 
-if(dataSnapshot.child("seen").exists()) {
-    showNotifications(dataSnapshot.child("friend_name").getValue().toString(), "went to supermarket", dataSnapshot.child("list_ref").getValue().toString());
-
-    dataSnapshot.child("seen").getRef().removeValue();
-}
+          if(dataSnapshot.child("seen").exists()) {
+              showNotifications(dataSnapshot.child("friend_name").getValue().toString(), "went to supermarket", dataSnapshot.child("list_ref").getValue().toString());
+              dataSnapshot.child("seen").getRef().removeValue();
+           }
 
             }
 
@@ -87,11 +86,6 @@ if(dataSnapshot.child("seen").exists()) {
 
 
         });
-
-
-
-
-
 
         return START_STICKY;
     }
@@ -119,12 +113,8 @@ if(dataSnapshot.child("seen").exists()) {
         }*/
 
 
-
-
-
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);
         mBuilder.setAutoCancel(true);
-
 
         Intent resultIntent = new Intent(this, DetailGroceryList.class);
         resultIntent.putExtra("list_ref", list_ref);
