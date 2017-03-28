@@ -41,6 +41,17 @@
         android:text="Add item"
         android:id="@+id/add_item"/>
 
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:background="#366ecf"
+                android:id="@+id/done_shopping"
+                android:textColor="@android:color/white"
+                android:text="Done Shopping!"/>
+
+
     </LinearLayout>
 
 </ScrollView>

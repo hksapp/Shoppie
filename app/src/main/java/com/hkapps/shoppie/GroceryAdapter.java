@@ -126,7 +126,9 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                                 postdata.put("friend_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
                                 postdata.put("timestamp", ServerValue.TIMESTAMP);
                                 postdata.put("seen", true);
+                                postdata.put("current_list_id",DetailGroceryList.pushid);
                                 postdata.put("list_ref", nPath.getRef().toString());
+                                postdata.put("live_shopping",true);
 
                                 notifyTheUserRef.push().setValue(postdata);
 

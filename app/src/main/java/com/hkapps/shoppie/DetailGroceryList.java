@@ -38,6 +38,7 @@ public class DetailGroceryList extends AppCompatActivity {
         setContentView(R.layout.activity_detail_grocery_list);
 
         Button add_item = (Button) findViewById(R.id.add_item);
+        Button done_shopping = (Button) findViewById(R.id.done_shopping);
         final EditText title = (EditText) findViewById(R.id.groceries_list_title);
 
 //Handling When it Comes from notification!
@@ -45,7 +46,7 @@ public class DetailGroceryList extends AppCompatActivity {
 
             edtRef = getIntent().getStringExtra("list_ref").toString();
 
-
+done_shopping.setVisibility(View.GONE);
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor edit = sp.edit();
             edit.putInt("from_notif", 1);
@@ -109,6 +110,8 @@ public class DetailGroceryList extends AppCompatActivity {
 
         } else {
 
+done_shopping.setVisibility(View.VISIBLE);
+
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor edit = sp.edit();
@@ -164,6 +167,60 @@ public class DetailGroceryList extends AppCompatActivity {
 
                 }
             });
+
+
+            done_shopping.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+
+                    DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
+                    notifRef.keepSynced(true);
+                    notifRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot dp : dataSnapshot.getChildren()) {
+
+                                final DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("Notifications");
+
+                                notifyTheUserRef.orderByChild("current_list_id").equalTo(DetailGroceryList.pushid).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                            notifyTheUserRef.child(dsp.getKey()).child("live_shopping").setValue(false);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+finish();
+
+            }
+
+
+            });
+
 
 
             linearLayoutManager = new LinearLayoutManager(this);
