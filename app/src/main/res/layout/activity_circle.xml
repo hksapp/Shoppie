@@ -15,6 +15,7 @@
         android:id="@+id/add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/testrect"
         android:padding="15dp"
         android:text="Add"
         android:textColor="@android:color/white"
@@ -34,3 +35,4 @@
     android:scrollbars="none">
 </android.support.v7.widget.RecyclerView>
 </LinearLayout>
+
