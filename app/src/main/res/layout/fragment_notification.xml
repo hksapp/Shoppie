@@ -6,9 +6,12 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/notification_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:scrollbars="none"/>
 
 </FrameLayout>

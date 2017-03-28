@@ -48,11 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseAuthenticationProcess();
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
@@ -136,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ShoppieFragment(), "Shop");
-        adapter.addFragment(new NotificationFragment(), "Profile");
+        adapter.addFragment(new NotificationFragment(), "Notifications");
         viewPager.setAdapter(adapter);
     }
 
@@ -203,6 +199,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
+
+                    viewPager = (ViewPager) findViewById(R.id.viewpager);
+                    setupViewPager(viewPager);
+
+                    tabLayout = (TabLayout) findViewById(R.id.tabs);
+                    tabLayout.setupWithViewPager(viewPager);
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 

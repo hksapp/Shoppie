@@ -188,7 +188,7 @@ done_shopping.setVisibility(View.VISIBLE);
 
                                 final DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("Notifications");
 
-                                notifyTheUserRef.orderByChild("current_list_id").equalTo(DetailGroceryList.pushid).addValueEventListener(new ValueEventListener() {
+                                notifyTheUserRef.orderByChild("current_list_id").equalTo(DetailGroceryList.pushid).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
