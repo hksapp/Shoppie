@@ -1,5 +1,7 @@
 package com.hkapps.shoppie;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +34,7 @@ public class Circle extends AppCompatActivity {
     private DatabaseReference ref,ref2;
     private String gmail;
     private EditText gmailid_circle;
-    private int value=0;
+    private static int value=0;
     private List<CircleObject> circleList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CircleAdapter cAdapter;
@@ -50,6 +53,7 @@ public class Circle extends AppCompatActivity {
         adduser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 gmail=gmailid_circle.getText().toString();
                 database=FirebaseDatabase.getInstance();
                 ref2=database.getReference().child("Users");
@@ -63,7 +67,12 @@ public class Circle extends AppCompatActivity {
                                 ref.child(snapshot.getKey()).child("email").setValue(snapshot.child("email").getValue());
                                 ref.child(snapshot.getKey()).child("userImageUrl").setValue(snapshot.child("userImageUrl").getValue());
                                 value=1;
+                                Toast.makeText(Circle.this, "added successfully", Toast.LENGTH_SHORT).show();
                             }
+                        }
+                        if(value!=1)
+                        {
+                            Toast.makeText(Circle.this, "invalid mailid/not exists", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -72,8 +81,7 @@ public class Circle extends AppCompatActivity {
 
                     }
                 });
-                if(value==0)
-                    Toast.makeText(Circle.this, "invalid mailid/not exists", Toast.LENGTH_SHORT).show();
+                hideSoftKeyboard(Circle.this, view);
             }
         });
        /* recyclerView = (RecyclerView) findViewById(R.id.showuser_incircle);
@@ -86,14 +94,20 @@ public class Circle extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.showuser_incircle);
-        recyclerView.setHasFixedSize(true);
+        /*recyclerView.setHasFixedSize(true);*/
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         childRef = mDatabaseRef.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Circle");
         cAdapter = new CircleAdapter(CircleObject.class, R.layout.activity_circle_list, CircleHolder.class, childRef, getApplicationContext());
+        cAdapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(cAdapter);
         /*prepareCircleData();*/
         Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();
+    }
+    public static void hideSoftKeyboard (Activity activity, View view)
+    {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 /*
     private void prepareCircleData(){
