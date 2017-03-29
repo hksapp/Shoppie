@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class Conversation extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 234;
@@ -40,6 +41,7 @@ public class Conversation extends AppCompatActivity {
     private String messageid, fireBaseUser, currentUser, getusername;
     private String chatid = "";
     private Boolean ismine;
+    private long timestamp;
     private DatabaseReference mDatabaseRef;
     private DatabaseReference childRef;
     private LinearLayoutManager linearlayoutmanager;
@@ -58,6 +60,7 @@ public class Conversation extends AppCompatActivity {
         messageTosend = (EditText) findViewById(R.id.message_to_be_sent);
         mref = FirebaseDatabase.getInstance().getReference();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        timestamp=new Date().getTime();
         fireBaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         ref = FirebaseDatabase.getInstance().getReference().child("Users").child(fireBaseUser);
         ref_circle = ref;
@@ -71,9 +74,9 @@ public class Conversation extends AppCompatActivity {
             public void onClick(View view) {
                 if (!messageTosend.getText().toString().equals("")) {
                     if (!ismine) {
-                        messageid = mref.child("MallChat").child(chatid).push().getKey();
+                        messageid = mref.child("MallChat").child(chatid).child("messages").push().getKey();
                     } else {
-                        messageid = mref.child("MallChat").child(chatid).push().getKey();
+                        messageid = mref.child("MallChat").child(chatid).child("messages").push().getKey();
                         ref_circle.child("Circle").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,11 +91,24 @@ public class Conversation extends AppCompatActivity {
 
                             }
                         });
+                       /* mref.child("MallChat").child(chatid).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(!dataSnapshot.child("timestamp").exists())
+                                    mref.child("MallChat").child(chatid).child("timestamp").setValue(String.valueOf(timestamp));
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });*/
 
                     }
-                    mref.child("MallChat").child(chatid).child(messageid).child("message").setValue(messageTosend.getText().toString());
-                    mref.child("MallChat").child(chatid).child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                    mref.child("MallChat").child(chatid).child(messageid).child("messageType").setValue("text");
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("message").setValue(messageTosend.getText().toString());
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("messageType").setValue("text");
                     Toast.makeText(Conversation.this, "message sent", Toast.LENGTH_SHORT).show();
                     messageTosend.setText("");
                     linearlayoutmanager.setStackFromEnd(true);
@@ -113,7 +129,7 @@ public class Conversation extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.messaging_recyclerView);
         /*recyclerView.setHasFixedSize(true);*/
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        childRef = mDatabaseRef.child("MallChat").child(chatid);
+        childRef = mDatabaseRef.child("MallChat").child(chatid).child("messages");
         mAdapter = new MessagingAdapter(MessagingObject.class, R.layout.messaging_screen, MessagingHolder.class, childRef, getApplicationContext());
         mAdapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(linearlayoutmanager);
@@ -148,9 +164,9 @@ public class Conversation extends AppCompatActivity {
                     //hiding the progress dialog
                     progressDialog.dismiss();
                     @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    mref.child("MallChat").child(chatid).child(messageid).child("message").setValue(downloadUrl.toString());
-                    mref.child("MallChat").child(chatid).child(messageid).child("messageType").setValue("image");
-                    mref.child("MallChat").child(chatid).child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("message").setValue(downloadUrl.toString());
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("messageType").setValue("image");
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                     //and displaying a success toast
                     Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
                     linearlayoutmanager.setStackFromEnd(true);

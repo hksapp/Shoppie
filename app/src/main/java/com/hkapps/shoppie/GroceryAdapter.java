@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +26,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     private static final String TAG = GroceryAdapter.class.getSimpleName();
     private Context context;
     DatabaseReference edtUpdateRef, deleteRef;
-
+    private static String buffer="";
     private boolean firstTimeCheck = true;
 
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
@@ -48,6 +49,19 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
 
         final String item_key = getRef(position).getKey().toString();
 
+       /* FirebaseDatabase.getInstance().getReferenceFromUrl(DetailGroceryList.edtRef).child("items").child(item_key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("sentby").exists())
+                  buffer=dataSnapshot.child("sentby").getValue().toString();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
         SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
         int fromNotif = sharedPreference.getInt("from_notif", 100);
 
@@ -57,20 +71,18 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
             viewHolder.deleteIcon.setVisibility(View.VISIBLE);
             viewHolder.chkbox.setEnabled(true);
             viewHolder.edt.setEnabled(true);
-            if (item_key.length() > getUserId().length()) {
+            if (item_key.length() > getUserId().length()/*!buffer.equals("")*/) {
                 viewHolder.edt.setEnabled(false);
                 viewHolder.edt.setTextColor(Color.BLUE);
-
+                Toast.makeText(context, model.getItemname(), Toast.LENGTH_SHORT).show();
             }
 
         } else {
-
-
             viewHolder.edt.setEnabled(false);
             viewHolder.deleteIcon.setVisibility(View.GONE);
             viewHolder.chkbox.setEnabled(false);
 
-            if (item_key.contains(getUserId())) {
+            if (item_key.contains(getUserId())/*!buffer.equals("")*/) {
 
                 viewHolder.edt.setEnabled(true);
                 viewHolder.deleteIcon.setVisibility(View.VISIBLE);

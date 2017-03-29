@@ -45,7 +45,7 @@ public class MessagingAdapter extends FirebaseRecyclerAdapter<MessagingObject, M
         String mainuser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         String mtype = model.getMessageType().toString();
 
-        ref = FirebaseDatabase.getInstance().getReference().child("Users").child(model.getSentBy().toString());
+        ref = FirebaseDatabase.getInstance().getReference().child("Users").child(model.getSentBy());
         ref.child("username").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

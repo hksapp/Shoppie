@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +31,7 @@ public class NotificationListener extends Service {
 
     private NotificationCompat.Builder mBuilder;
     private int notif_id = 0;
-
+    private static int i=0;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -52,12 +53,13 @@ public class NotificationListener extends Service {
 
 
 
-                if (notif_id > 30000)
+               /* if (notif_id > 30000)
                     notif_id = 0;
 
                 notif_id = notif_id + 1;
+*/
 
-          if(dataSnapshot.child("seen").exists()) {
+                if(dataSnapshot.child("seen").exists()) {
               showNotifications(dataSnapshot.child("friend_name").getValue().toString(), "went to supermarket", dataSnapshot.child("list_ref").getValue().toString());
               dataSnapshot.child("seen").getRef().removeValue();
            }
