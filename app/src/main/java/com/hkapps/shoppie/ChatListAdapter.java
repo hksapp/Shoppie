@@ -1,11 +1,11 @@
 package com.hkapps.shoppie;
 
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.view.View;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.Query;
+        import com.firebase.ui.database.FirebaseRecyclerAdapter;
+        import com.google.firebase.database.Query;
 
 /**
  * Created by vamshi on 16-03-2017.
