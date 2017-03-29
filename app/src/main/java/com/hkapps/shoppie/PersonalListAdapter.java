@@ -102,7 +102,7 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
             public boolean onLongClick(View view) {
 
                 AlertDialog.Builder alertD = new AlertDialog.Builder(view.getContext());
-                alertD.setTitle("Grocery List");
+                alertD.setTitle("List");
                 alertD.setMessage("Delete this list ?");
                 alertD.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
