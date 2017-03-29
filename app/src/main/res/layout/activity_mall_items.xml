@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <TextView
+<!--    <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="5dp"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray" />-->
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

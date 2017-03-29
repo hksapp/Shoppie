@@ -23,6 +23,7 @@ public class MallItemsActivity extends AppCompatActivity {
     private ChatListAdapter chatAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Mall Items");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mall_items);
 /*
