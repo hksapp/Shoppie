@@ -8,42 +8,46 @@
     tools:context="com.hkapps.shoppie.Conversation">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/messaging_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
-        android:id="@+id/messaging_recyclerView"
-        />
+        android:layout_weight="9" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@android:color/darker_gray"/>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:orientation="horizontal"
-    android:id="@+id/base"
-    android:gravity="center">
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:id="@+id/plus"
-        android:src="@drawable/ic_add_black_24dp"/>
-    <EditText
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/message_to_be_sent"
-        android:layout_weight="7"
-        android:background="@android:color/transparent"
-        android:hint="enter message"/>
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:id="@+id/send_message"
-        android:src="@drawable/ic_send_black_24dp"/>
-</LinearLayout>
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/base"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/plus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:src="@drawable/ic_add_black_24dp" />
+
+        <EditText
+            android:id="@+id/message_to_be_sent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:background="@android:color/transparent"
+            android:hint="enter message" />
+
+        <ImageView
+            android:id="@+id/send_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:src="@drawable/ic_send_black_24dp" />
+    </LinearLayout>
 </LinearLayout>

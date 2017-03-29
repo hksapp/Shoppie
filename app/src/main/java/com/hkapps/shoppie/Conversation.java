@@ -2,19 +2,15 @@ package com.hkapps.shoppie;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,8 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.IOException;
 
 public class Conversation extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 234;
@@ -113,7 +107,7 @@ public class Conversation extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.messaging_recyclerView);
         recyclerView.setHasFixedSize(true);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        childRef = mDatabaseRef.child("MallChat").child(chatid);
+        childRef = mDatabaseRef.child("MallChat").child(chatid).child("messages");
         mAdapter = new MessagingAdapter(MessagingObject.class, R.layout.messaging_screen, MessagingHolder.class, childRef, getApplicationContext());
         mAdapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(linearlayoutmanager);

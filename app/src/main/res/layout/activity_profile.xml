@@ -152,6 +152,17 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="#424242" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:id="@+id/signout"
+                android:text="Sign Out"
+                android:textStyle="bold"
+                android:background="@drawable/testrect"
+                android:padding="4dp"/>
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>
