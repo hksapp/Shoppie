@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by vamshi on 16-03-2017.
@@ -32,9 +31,9 @@ public class ChatListAdapter extends FirebaseRecyclerAdapter<ChatListObject,Chat
     @Override
     protected void populateViewHolder(ChatListHolder viewHolder, ChatListObject model, final int position) {
         viewHolder.username.setText(model.getUsername());
-      //  if(model.getUserImageUrl()!=null) {
+      /* if(model.getUserImageUrl()!=null) {
             Picasso.with(context).load(model.getUserImageUrl().toString()).into(viewHolder.userImageUrl);
-      //  }
+       }*/
         viewHolder.chatid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
