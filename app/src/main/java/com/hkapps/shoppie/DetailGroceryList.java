@@ -104,7 +104,7 @@ done_shopping.setVisibility(View.GONE);
             final DatabaseReference notificatonRef = FirebaseDatabase.getInstance().getReferenceFromUrl(getIntent().getStringExtra("list_ref").toString());
 
 
-        title.setEnabled(false);
+            title.setEnabled(false);
 
 
             notificatonRef.child("title").addValueEventListener(new ValueEventListener() {
@@ -125,11 +125,10 @@ done_shopping.setVisibility(View.GONE);
             add_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String buffer=notificatonRef.push().getKey().toString();
 
-
-                   notificatonRef.child("items").child(getUserId()+"_"+notificatonRef.push().getKey().toString()).child("itemname").setValue("");
-
-
+                    notificatonRef.child("items").child(getUserId()+"_"+buffer).child("itemname").setValue("");
+                    notificatonRef.child("items").child(getUserId()+"_"+buffer).child("sentby").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                     mGroceryAdapter.notifyDataSetChanged();
 
 

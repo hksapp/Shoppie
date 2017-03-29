@@ -20,18 +20,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Circle extends AppCompatActivity {
     FirebaseDatabase database;
     private DatabaseReference ref,ref2;
-    private String gmail;
+    private String gmail,currentUserGmail;
     private EditText gmailid_circle;
     private static int value=0;
     private List<CircleObject> circleList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CircleAdapter cAdapter;
-    private CircleObject circle;
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference mDatabaseRef;
     private DatabaseReference childRef;
@@ -44,6 +45,7 @@ public class Circle extends AppCompatActivity {
 
         database= FirebaseDatabase.getInstance();
         gmailid_circle=(EditText)findViewById(R.id.gmailid_circle);
+        currentUserGmail=FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
         ref=database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Circle");
         TextView adduser=(TextView)findViewById(R.id.add_user);
         adduser.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +61,17 @@ public class Circle extends AppCompatActivity {
                         for (DataSnapshot snapshot:dataSnapshot.getChildren()){
                             if(gmail.equals(snapshot.child("email").getValue().toString()))
                             {
+                                if(gmail.equals(currentUserGmail))
+                                    Toast.makeText(Circle.this, "You cannot add yourself to your circle", Toast.LENGTH_SHORT).show();
+                                else{
                                 ref.child(snapshot.getKey()).child("username").setValue(snapshot.child("username").getValue());
                                 ref.child(snapshot.getKey()).child("email").setValue(snapshot.child("email").getValue());
                                 ref.child(snapshot.getKey()).child("userImageUrl").setValue(snapshot.child("userImageUrl").getValue());
+
+                                Toast.makeText(Circle.this, "added successfully", Toast.LENGTH_SHORT).show();}
                                 value=1;
-                                Toast.makeText(Circle.this, "added successfully", Toast.LENGTH_SHORT).show();
                             }
+
                         }
                         if(value!=1)
                         {
@@ -80,13 +87,7 @@ public class Circle extends AppCompatActivity {
                 hideSoftKeyboard(Circle.this, view);
             }
         });
-       /* recyclerView = (RecyclerView) findViewById(R.id.showuser_incircle);
 
-        cAdapter = new CircleAdapter(circleList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(cAdapter);*/
 
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.showuser_incircle);
@@ -105,29 +106,5 @@ public class Circle extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
-/*
-    private void prepareCircleData(){
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String username,mailId,imageUrl;
-                if (dataSnapshot.exists()) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Toast.makeText(Circle.this, snapshot.child("username").getValue().toString(), Toast.LENGTH_SHORT).show();
-                    username = snapshot.child("username").getValue().toString();
-                    mailId = snapshot.child("email").getValue().toString();
-                    imageUrl = snapshot.child("userImageUrl").getValue().toString();
-                    circle = new CircleObject(username, mailId,imageUrl);
-                    circleList.add(circle);
-                 }
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        cAdapter.notifyDataSetChanged();
-    }*/
 }

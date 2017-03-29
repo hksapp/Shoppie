@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -34,6 +35,8 @@ public class CircleAdapter extends FirebaseRecyclerAdapter<CircleObject,CircleHo
             public void onClick(View view) {
                 DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
                 deleteRef.child(item_key).removeValue();
+                deleteRef=FirebaseDatabase.getInstance().getReference().child("Users").child(item_key).child("ActiveChats").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                deleteRef.removeValue();
             }
         });
     }

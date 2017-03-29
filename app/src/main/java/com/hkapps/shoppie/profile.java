@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import java.io.IOException;
 public class profile extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final int PICK_IMAGE_REQUEST = 234;
     private TextView mailid, username, noofmembers;
+    private LinearLayout circlecountview;
     private ImageView imageview;
     private Uri filePath;
     private StorageReference mStorageRef;
@@ -53,8 +55,14 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         noofmembers = (TextView) findViewById(R.id.circleCount);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-
+        circlecountview=(LinearLayout)findViewById(R.id.circlecountclick);
+        circlecountview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(profile.this,Circle.class);
+                startActivity(i);
+            }
+        });
         ref = database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
