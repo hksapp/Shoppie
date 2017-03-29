@@ -86,6 +86,8 @@ public class DetailGroceryList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_grocery_list);
 
+
+
         Button add_item = (Button) findViewById(R.id.add_item);
         Button done_shopping = (Button) findViewById(R.id.done_shopping);
         final EditText title = (EditText) findViewById(R.id.groceries_list_title);
@@ -157,9 +159,11 @@ done_shopping.setVisibility(View.GONE);
 
 
         } else {
-
-done_shopping.setVisibility(View.VISIBLE);
-
+if(getIntent().getIntExtra("new_list",0)==3) {
+    done_shopping.setVisibility(View.GONE);
+}else {
+    done_shopping.setVisibility(View.VISIBLE);
+}
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor edit = sp.edit();

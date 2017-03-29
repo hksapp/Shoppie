@@ -113,6 +113,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
             public void onClick(View view) {
 
 
+
                 DatabaseReference chkboxRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
 
 

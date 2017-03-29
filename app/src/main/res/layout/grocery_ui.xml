@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-
     android:orientation="horizontal">
 
     <CheckBox
@@ -20,6 +19,8 @@
         android:id="@+id/edt"
         android:background="@android:color/transparent"
         android:lines="1"
+
+        android:imeOptions="actionDone"
         android:maxLines="1"
         android:hint="Item Name"/>
 

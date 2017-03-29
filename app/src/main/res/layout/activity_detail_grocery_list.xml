@@ -42,14 +42,15 @@
         android:id="@+id/add_item"/>
 
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:background="#366ecf"
-                android:id="@+id/done_shopping"
-                android:textColor="@android:color/white"
-                android:text="Done Shopping!"/>
+        <Button
+            android:id="@+id/done_shopping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#366ecf"
+            android:text="Done Shopping!"
+
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
 
 
     </LinearLayout>

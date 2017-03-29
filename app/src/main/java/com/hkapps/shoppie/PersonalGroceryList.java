@@ -63,6 +63,7 @@ public class PersonalGroceryList extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(PersonalGroceryList.this,DetailGroceryList.class);
+                i.putExtra("new_list",3);
                 startActivity(i);
             }
         });
