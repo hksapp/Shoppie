@@ -31,6 +31,9 @@ public class ChatListAdapter extends FirebaseRecyclerAdapter<ChatListObject,Chat
     @Override
     protected void populateViewHolder(ChatListHolder viewHolder, ChatListObject model, final int position) {
         viewHolder.username.setText(model.getUsername());
+      /* if(model.getUserImageUrl()!=null) {
+            Picasso.with(context).load(model.getUserImageUrl().toString()).into(viewHolder.userImageUrl);
+       }*/
         viewHolder.chatid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

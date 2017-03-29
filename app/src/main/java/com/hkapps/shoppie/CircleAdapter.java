@@ -38,6 +38,7 @@ public class CircleAdapter extends FirebaseRecyclerAdapter<CircleObject,CircleHo
         });
     }
     /*
+
     private List<CircleObject> circleList;
     private View v;
     public class MyCircleHolder extends RecyclerView.ViewHolder{
