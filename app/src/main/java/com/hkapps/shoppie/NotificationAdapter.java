@@ -1,6 +1,8 @@
 package com.hkapps.shoppie;
 
 import android.content.Context;
+import android.content.Intent;
+import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -37,13 +39,14 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<NotificationObj
 
 
 
-        viewHolder.notif_txt.setText(model.getFriend_name()+" Went to Supermarket");
+        viewHolder.notif_txt.setText(model.getFriend_name()+" is Shopping!");
 
-        DatabaseReference imgRef = FirebaseDatabase.getInstance().getReference().child(DetailGroceryList.getUserId()).child("userImageUrl");
+        DatabaseReference imgRef = FirebaseDatabase.getInstance().getReference().child("Users").child(model.getFriend_user_id().toString()).child("userImageUrl");
 
         imgRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
 
                 if(dataSnapshot.exists())
                 {
@@ -59,5 +62,20 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<NotificationObj
         });
 
 
+
+
+        viewHolder.notif_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent resultIntent = new Intent(context, DetailGroceryList.class);
+                resultIntent.putExtra("list_ref", model.getList_ref());
+                context.startActivity(resultIntent);
+
+            }
+        });
+
+
     }
+
 }
