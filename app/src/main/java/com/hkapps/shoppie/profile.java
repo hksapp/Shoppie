@@ -120,6 +120,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
             public void onClick(View view) {
                 AuthUI.getInstance()
                         .signOut(profile.this);
+                getApplication().stopService(new Intent(getApplication(), NotificationListener.class));
                 finish();
                 }
         });
