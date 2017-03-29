@@ -70,6 +70,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
         if (fromNotif == 2) {
             viewHolder.deleteIcon.setVisibility(View.VISIBLE);
             viewHolder.chkbox.setEnabled(true);
+            viewHolder.deleteIcon.setEnabled(true);
             viewHolder.edt.setEnabled(true);
             if (item_key.length() > getUserId().length()/*!buffer.equals("")*/) {
                 viewHolder.edt.setEnabled(false);
