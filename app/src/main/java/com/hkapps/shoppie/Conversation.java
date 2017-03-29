@@ -84,9 +84,9 @@ public class Conversation extends AppCompatActivity {
                         });
 
                     }
-                    mref.child("MallChat").child(chatid).child(messageid).child("message").setValue(messageTosend.getText().toString());
-                    mref.child("MallChat").child(chatid).child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                    mref.child("MallChat").child(chatid).child(messageid).child("messageType").setValue("text");
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("message").setValue(messageTosend.getText().toString());
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("sentBy").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                    mref.child("MallChat").child(chatid).child("messages").child(messageid).child("messageType").setValue("text");
                     Toast.makeText(Conversation.this, "message sent", Toast.LENGTH_SHORT).show();
                     messageTosend.setText("");
                     linearlayoutmanager.setStackFromEnd(true);
