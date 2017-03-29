@@ -121,7 +121,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
                 AuthUI.getInstance()
                         .signOut(profile.this);
                 finish();
-                Toast.makeText(profile.this, "jhvjg", Toast.LENGTH_SHORT).show();}
+                }
         });
 
 
