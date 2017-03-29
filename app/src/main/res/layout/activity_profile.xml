@@ -41,8 +41,8 @@
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:padding="10dp"
+                    android:layout_marginLeft="25dp"
                     android:textStyle="bold"
                     android:text="User Name"
                     android:textSize="18dp" />
@@ -73,8 +73,8 @@
                     android:id="@+id/mailid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:padding="10dp"
+                    android:layout_marginLeft="25dp"
                     android:text="Mail Id"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -103,8 +103,9 @@
                     android:id="@+id/location_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="25dp"
                     android:padding="10dp"
+                    android:textColor="@android:color/tertiary_text_light"
                     android:text="Location Services"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -131,8 +132,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="25dp"
                     android:padding="10dp"
                     android:text="Circle Count"
                     android:textSize="18dp" />
