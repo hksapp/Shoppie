@@ -19,6 +19,6 @@ public class ChatListHolder extends RecyclerView.ViewHolder {
         super(itemView);
         username = (TextView)itemView.findViewById(R.id.chat_userName);
         chatid=(LinearLayout)itemView.findViewById(R.id.chatid);
-        userImageUrl =(ImageView) itemView.findViewById(R.id.userImageUrl);
+        userImageUrl =(ImageView) itemView.findViewById(R.id.userImageUrlchat);
     }
 }

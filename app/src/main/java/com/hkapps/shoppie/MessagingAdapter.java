@@ -3,8 +3,6 @@ package com.hkapps.shoppie;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,16 +38,18 @@ public class MessagingAdapter extends FirebaseRecyclerAdapter<MessagingObject, M
     }
 
     @Override
-    protected void populateViewHolder(MessagingHolder viewHolder, MessagingObject model, int position) {
+    protected void populateViewHolder(final MessagingHolder viewHolder, MessagingObject model, int position) {
         String user = model.getSentBy();
         String mainuser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-        String mtype = model.getMessageType().toString();
+        String mtype = model.getMessageType();
 
         ref = FirebaseDatabase.getInstance().getReference().child("Users").child(model.getSentBy());
         ref.child("username").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 username = dataSnapshot.getValue().toString();
+                viewHolder.sentby_username.setText(username);
+
             }
 
             @Override
@@ -57,7 +57,6 @@ public class MessagingAdapter extends FirebaseRecyclerAdapter<MessagingObject, M
 
             }
         });
-        viewHolder.sentby_username.setText(username);
         if (mtype.equals("text")) {
             viewHolder.message.setText(model.getMessage());
             viewHolder.image.setVisibility(View.GONE);

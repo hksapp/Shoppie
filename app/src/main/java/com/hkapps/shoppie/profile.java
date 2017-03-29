@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +42,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
     private LinearLayout circlecountview;
     private ImageView imageview;
     private Uri filePath;
+    private Button signout;
     private StorageReference mStorageRef;
     private DatabaseReference ref, ref2;
     /* boolean isImageFitToScreen=false;*/
@@ -52,6 +55,10 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         setContentView(R.layout.activity_profile);
         mailid = (TextView) findViewById(R.id.mailid);
         username = (TextView) findViewById(R.id.username);
+
+        signout = (Button) findViewById(R.id.signout);
+
+
         noofmembers = (TextView) findViewById(R.id.circleCount);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -115,7 +122,22 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         }
         s.setOnCheckedChangeListener(profile.this);
 
+
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthUI.getInstance()
+                        .signOut(profile.this);
+                getApplication().stopService(new Intent(getApplication(), NotificationListener.class));
+                finish();
+                }
+        });
+
+
     }
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
