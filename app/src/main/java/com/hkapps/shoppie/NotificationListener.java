@@ -220,7 +220,7 @@ public class NotificationListener extends Service {
         // mBuilder.setLargeIcon(Picasso.with(getBaseContext()).load(pic).get());
 
         mBuilder.setContentTitle(username);
-        mBuilder.setContentText(username + " " + "group is Active");
+        mBuilder.setContentText(username + " " + "Group is Active");
         mBuilder.setSmallIcon(R.drawable.common_google_signin_btn_icon_light_focused);
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.circle_24dp);
