@@ -1,23 +1,25 @@
 package com.hkapps.shoppie;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.hkapps.shoppie.DetailGroceryList.getUserId;
 
 public class MallItemsActivity extends AppCompatActivity {
     private TextView myconv;
@@ -40,7 +42,47 @@ public class MallItemsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i=new Intent(MallItemsActivity.this,Conversation.class);
                 i.putExtra("IsMyConversation",true);
-                startActivity(i);
+
+                DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
+                notifRef.keepSynced(true);
+                notifRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot dp : dataSnapshot.getChildren()) {
+
+                            DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("MallNotifications");
+
+                            notifyTheUserRef.keepSynced(true);
+                          //  DatabaseReference nPath = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid);
+
+                            Map postdata = new HashMap();
+                            postdata.put("friend_user_id", FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                            postdata.put("friend_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
+                            postdata.put("timestamp", ServerValue.TIMESTAMP);
+                            postdata.put("seen", true);
+                          //  postdata.put("current_list_id",DetailGroceryList.pushid);
+                           // postdata.put("list_ref", nPath.getRef().toString());
+                            postdata.put("live_shopping",true);
+
+                            notifyTheUserRef.push().setValue(postdata);
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+            startActivity(i);
             }
         });
         linearLayoutManager = new LinearLayoutManager(this);
