@@ -20,9 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Circle extends AppCompatActivity {
     FirebaseDatabase database;
@@ -99,7 +97,7 @@ public class Circle extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(cAdapter);
         /*prepareCircleData();*/
-        Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();*/
     }
     public static void hideSoftKeyboard (Activity activity, View view)
     {
