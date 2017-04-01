@@ -252,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
                         android:fontFamily="sans-serif-smallcaps"
-                        android:text="Mall items"
+                        android:text="Suggestions"
                         android:textColor="#ffffff"
                         android:textSize="34sp" />
 

@@ -63,7 +63,7 @@ public class PersonalListAdapter extends FirebaseRecyclerAdapter<PersonalGrocery
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int i =0;
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    if (!dsp.child("itemname").getValue().toString().isEmpty()){
+                    if (!dsp.child("itemname").getValue().toString().equals("")){
                     switch (i){
                         case 0:  viewHolder.item0.setText(dsp.child("itemname").getValue().toString());
                             break;
