@@ -10,8 +10,11 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <!-- Splash screen -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAAYr0gxRxwrWBN2DR8DcRIHM2UsWbEyxc"/>
+
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
@@ -27,21 +30,21 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".PersonalGroceryList"
-            android:label="Groceries"/>
-        <activity android:name=".DetailGroceryList"
-
-
-            ></activity>
-
+        <activity
+            android:name=".PersonalGroceryList"
+            android:label="Groceries" />
+        <activity android:name=".DetailGroceryList" />
         <activity android:name=".profile" />
-        <activity android:name=".Circle"/>
-        <activity android:name=".MallItemsActivity"/>
-        <activity android:name=".Conversation"/>
-
+        <activity android:name=".Circle" />
+        <activity android:name=".MallItemsActivity" />
+        <activity android:name=".Conversation" />
 
         <service android:name=".NotificationListener" />
+        <service
+            android:name=".GpsTacker"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

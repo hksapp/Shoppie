@@ -19,6 +19,8 @@ package com.hkapps.shoppie;
         import java.util.HashMap;
         import java.util.Map;
 
+        import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by kamal on 26-02-2017.
  */
@@ -28,6 +30,9 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     DatabaseReference edtUpdateRef, deleteRef;
     private static String buffer="";
     private boolean firstTimeCheck = true;
+    double longitude;
+    double latitude;
+    GpsTacker   gps;
 
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -114,14 +119,37 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
             public void onClick(View view) {
 
 
-
                 DatabaseReference chkboxRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
 
 
                 chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
                 chkboxRef.keepSynced(true);
                 if (firstTimeCheck) {
+                    gps = new GpsTacker(context);
+                    if(gps.canGetLocation()){
+                        longitude = gps.getLongitude();
+                        latitude = gps .getLatitude();
+                        Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getApplicationContext(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude),Toast.LENGTH_SHORT).show();
+                        Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId)
+                                .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                                    @Override
+                                    public void onResult(PlaceBuffer places) {
+                                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                                            final Place myPlace = places.get(0);
+                                            Log.i(TAG, "Place found: " + myPlace.getName());
+                                        } else {
+                                            Log.e(TAG, "Place not found");
+                                        }
+                                        places.release();
+                                    }
+                                });
+                    }
+                    else
+                    {
 
+                        gps.showSettingsAlert();
+                    }
                     DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
                     notifRef.keepSynced(true);
                     notifRef.addValueEventListener(new ValueEventListener() {
