@@ -1,5 +1,6 @@
 package com.hkapps.shoppie;
 
+        import android.app.ProgressDialog;
         import android.content.Context;
         import android.content.SharedPreferences;
         import android.graphics.Color;
@@ -16,8 +17,20 @@ package com.hkapps.shoppie;
         import com.google.firebase.database.ServerValue;
         import com.google.firebase.database.ValueEventListener;
 
+        import org.json.JSONException;
+        import org.json.JSONObject;
+
+        import java.io.BufferedReader;
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.io.InputStreamReader;
+        import java.net.HttpURLConnection;
+        import java.net.MalformedURLException;
+        import java.net.URL;
         import java.util.HashMap;
         import java.util.Map;
+        import org.apache.http.client.*;
+        import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
         import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -33,6 +46,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     double longitude;
     double latitude;
     GpsTacker   gps;
+    ProgressDialog pd;
 
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -124,14 +138,14 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
 
                 chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
                 chkboxRef.keepSynced(true);
+                gps = new GpsTacker(context);
                 if (firstTimeCheck) {
-                    gps = new GpsTacker(context);
                     if(gps.canGetLocation()){
                         longitude = gps.getLongitude();
                         latitude = gps .getLatitude();
                         Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();
                         //  Toast.makeText(getApplicationContext(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude),Toast.LENGTH_SHORT).show();
-                        Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId)
+                      /*  Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId)
                                 .setResultCallback(new ResultCallback<PlaceBuffer>() {
                                     @Override
                                     public void onResult(PlaceBuffer places) {
@@ -143,12 +157,11 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                                         }
                                         places.release();
                                     }
-                                });
+                                });*/
                     }
                     else
                     {
-
-                        gps.showSettingsAlert();
+                        gps.showSettingsAlert(view);
                     }
                     DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
                     notifRef.keepSynced(true);
@@ -234,5 +247,74 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
 
         return FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
 
+    }
+
+
+
+    private class JsonTask extends AsyncTask<String, String, String> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pd = new ProgressDialog(context);
+            pd.setMessage("Please wait");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        protected String doInBackground(String... params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+
+                }
+
+                return buffer.toString();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (pd.isShowing()){
+                pd.dismiss();
+            }
+            /*txtJson.setText(result);*/
+        }
     }
 }

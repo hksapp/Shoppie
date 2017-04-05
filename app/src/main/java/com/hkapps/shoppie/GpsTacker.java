@@ -1,5 +1,6 @@
 package com.hkapps.shoppie;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -43,7 +45,6 @@ public class GpsTacker extends Service implements LocationListener {
         this.mContext = mContext;
         getLocation();
     }
-
     public GpsTacker(){
         this.mContext =null;
     }
@@ -140,8 +141,9 @@ public class GpsTacker extends Service implements LocationListener {
         return this.canGetLocation;
     }
 
-    public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+    public void showSettingsAlert(View view) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
 
 
         alertDialog.setTitle("GPS Not Enabled");
@@ -152,6 +154,7 @@ public class GpsTacker extends Service implements LocationListener {
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });
