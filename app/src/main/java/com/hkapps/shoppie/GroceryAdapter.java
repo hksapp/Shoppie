@@ -51,7 +51,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     ProgressDialog pd;
     StringBuilder googlePlacesUrl,resultOfJson=new StringBuilder("");
     private static final String GOOGLE_API_KEY = "AIzaSyBcB22W221UdiT4Ij9yVy23t1EYIDmJPIU";
-    private int PROXIMITY_RADIUS = 500;
+    private int PROXIMITY_RADIUS = 100;
     String type="food",finalResult;
     JSONObject res;
     JSONArray jsonArray;
@@ -151,21 +151,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                     if(gps.canGetLocation()){
                         longitude = gps.getLongitude();
                         latitude = gps .getLatitude();
-                        Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                        //  Toast.makeText(getApplicationContext(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude),Toast.LENGTH_SHORT).show();
-                      /*  Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId)
-                                .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                                    @Override
-                                    public void onResult(PlaceBuffer places) {
-                                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                                            final Place myPlace = places.get(0);
-                                            Log.i(TAG, "Place found: " + myPlace.getName());
-                                        } else {
-                                            Log.e(TAG, "Place not found");
-                                        }
-                                        places.release();
-                                    }
-                                });*/
+                        /*Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();*/
                         googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                         googlePlacesUrl.append("location=" + latitude + "," + longitude);
                         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
