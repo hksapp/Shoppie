@@ -113,15 +113,37 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         mImage.setImageBitmap(getCircleBitmap(bm));*/
         putImageView();
         Switch s = (Switch) findViewById(R.id.location_switch);
+        Switch notify=(Switch)findViewById(R.id.notification_switch);
         SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         int myIntValue = sp.getInt("location_preference", -1);
+        int notify_integer=sp.getInt("notify_preference",-1);
         if (myIntValue == 1) {
             s.setChecked(true);
         } else if (myIntValue == 0) {
             s.setChecked(false);
         }
-        s.setOnCheckedChangeListener(profile.this);
+        if (notify_integer==1)
+            notify.setChecked(true);
+        else if (notify_integer==0)
+            notify.setChecked(false);
 
+        s.setOnCheckedChangeListener(profile.this);
+        notify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                int isEnabled;
+                SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                if (b) {
+                    isEnabled = 1;
+
+                } else {
+                    isEnabled = 0;
+                }
+                editor.putInt("notify_preference", isEnabled);
+                editor.commit();
+            }
+        });
 
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
