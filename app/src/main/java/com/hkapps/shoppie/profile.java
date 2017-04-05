@@ -188,9 +188,9 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
     }
 
     /*  private Bitmap getCircleBitmap(Bitmap bitmap) {
-          final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+          final Bitmap jsonArray = Bitmap.createBitmap(bitmap.getWidth(),
                   bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-          final Canvas canvas = new Canvas(output);
+          final Canvas canvas = new Canvas(jsonArray);
 
           final int color = Color.RED;
           final Paint paint = new Paint();
@@ -207,7 +207,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
 
           bitmap.recycle();
 
-          return output;
+          return jsonArray;
       }*/
     private void uploadFile() {
         if (filePath != null) {

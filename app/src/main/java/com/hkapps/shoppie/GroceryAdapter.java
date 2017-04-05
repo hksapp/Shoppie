@@ -1,9 +1,11 @@
 package com.hkapps.shoppie;
 
+        import android.app.Activity;
         import android.app.ProgressDialog;
         import android.content.Context;
         import android.content.SharedPreferences;
         import android.graphics.Color;
+        import android.os.Looper;
         import android.preference.PreferenceManager;
         import android.view.View;
         import android.widget.Toast;
@@ -17,6 +19,7 @@ package com.hkapps.shoppie;
         import com.google.firebase.database.ServerValue;
         import com.google.firebase.database.ValueEventListener;
 
+        import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
@@ -29,10 +32,9 @@ package com.hkapps.shoppie;
         import java.net.URL;
         import java.util.HashMap;
         import java.util.Map;
-        import org.apache.http.client.*;
-        import io.fabric.sdk.android.services.concurrency.AsyncTask;
+        import java.util.concurrent.ExecutionException;
 
-        import static com.facebook.FacebookSdk.getApplicationContext;
+        import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 /**
  * Created by kamal on 26-02-2017.
@@ -47,6 +49,12 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     double latitude;
     GpsTacker   gps;
     ProgressDialog pd;
+    StringBuilder googlePlacesUrl,resultOfJson=new StringBuilder("");
+    private static final String GOOGLE_API_KEY = "AIzaSyBcB22W221UdiT4Ij9yVy23t1EYIDmJPIU";
+    private int PROXIMITY_RADIUS = 500;
+    String type="food",finalResult;
+    JSONObject res;
+    JSONArray jsonArray;
 
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -158,6 +166,20 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                                         places.release();
                                     }
                                 });*/
+                        googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+                        googlePlacesUrl.append("location=" + latitude + "," + longitude);
+                        googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
+                        googlePlacesUrl.append("&types=" + type);
+                        googlePlacesUrl.append("&sensor=true");
+                        googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
+                        try {
+                            String str=new JsonTask().execute(String.valueOf(googlePlacesUrl)).get();
+                            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else
                     {
@@ -256,10 +278,6 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
         protected void onPreExecute() {
             super.onPreExecute();
 
-            pd = new ProgressDialog(context);
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
         }
 
         protected String doInBackground(String... params) {
@@ -272,21 +290,22 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
-
-
                 InputStream stream = connection.getInputStream();
-
                 reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
                 String line = "";
-
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-
+                    resultOfJson.append(line);
                 }
-
-                return buffer.toString();
+                try {
+                    res=new JSONObject(resultOfJson.toString());
+                    jsonArray =res.getJSONArray("results");
+                    res=jsonArray.getJSONObject(0);
+                    finalResult=res.getString("name");
+                    /*Looper.prepare();*/
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return finalResult;
 
 
             } catch (MalformedURLException e) {
@@ -311,9 +330,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (pd.isShowing()){
-                pd.dismiss();
-            }
+
             /*txtJson.setText(result);*/
         }
     }
