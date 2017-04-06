@@ -1,6 +1,8 @@
 package com.hkapps.shoppie;
 
-        import android.content.Context;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -18,6 +20,39 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Toast;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
+
 /**
  * Created by kamal on 26-02-2017.
  */
@@ -27,6 +62,16 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     DatabaseReference edtUpdateRef, deleteRef;
     private static String buffer="";
     private boolean firstTimeCheck = true;
+    double longitude;
+    double latitude;
+    GpsTacker   gps;
+    ProgressDialog pd;
+    StringBuilder googlePlacesUrl,resultOfJson=new StringBuilder("");
+    private static final String GOOGLE_API_KEY = "AIzaSyBcB22W221UdiT4Ij9yVy23t1EYIDmJPIU";
+    private int PROXIMITY_RADIUS = 100;
+    String type="food",finalResult;
+    JSONObject res;
+    JSONArray jsonArray;
 
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -115,14 +160,36 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
             public void onClick(View view) {
 
 
-
                 DatabaseReference chkboxRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid).child("items");
 
 
                 chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
                 chkboxRef.keepSynced(true);
+                gps = new GpsTacker(context);
                 if (firstTimeCheck) {
-
+                    if(gps.canGetLocation()){
+                        longitude = gps.getLongitude();
+                        latitude = gps .getLatitude();
+                        /*Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();*/
+                        googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+                        googlePlacesUrl.append("location=" + latitude + "," + longitude);
+                        googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
+                        googlePlacesUrl.append("&types=" + type);
+                        googlePlacesUrl.append("&sensor=true");
+                        googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
+                        try {
+                            String str=new JsonTask().execute(String.valueOf(googlePlacesUrl)).get();
+                            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else
+                    {
+                        gps.showSettingsAlert(view);
+                    }
                     DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
                     notifRef.keepSynced(true);
                     notifRef.addValueEventListener(new ValueEventListener() {
@@ -207,5 +274,69 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
 
         return FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
 
+    }
+
+
+
+    private class JsonTask extends AsyncTask<String, String, String> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        protected String doInBackground(String... params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    resultOfJson.append(line);
+                }
+                try {
+                    res=new JSONObject(resultOfJson.toString());
+                    jsonArray =res.getJSONArray("results");
+                    res=jsonArray.getJSONObject(0);
+                    finalResult=res.getString("name");
+                    /*Looper.prepare();*/
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return finalResult;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            /*txtJson.setText(result);*/
+        }
     }
 }

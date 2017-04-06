@@ -30,7 +30,6 @@ public class DetailGroceryList extends AppCompatActivity {
     public static String pushid;
     private DatabaseReference listRef;
     private long itemcount;
-
     public static String edtRef ="";
 
 
