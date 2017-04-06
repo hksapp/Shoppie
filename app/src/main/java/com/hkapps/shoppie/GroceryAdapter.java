@@ -151,7 +151,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                     if(gps.canGetLocation()){
                         longitude = gps.getLongitude();
                         latitude = gps .getLatitude();
-                        /*Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();*/
+                        Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();
                         googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
                         googlePlacesUrl.append("location=" + latitude + "," + longitude);
                         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
