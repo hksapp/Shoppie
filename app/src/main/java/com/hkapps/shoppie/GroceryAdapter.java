@@ -55,6 +55,7 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
     String type="food",finalResult;
     JSONObject res;
     JSONArray jsonArray;
+    String Location_for_notification="supermatket";
 
     public GroceryAdapter(Class<GroceryObject> modelClass, int modelLayout, Class<GroceryHolder> viewHolderClass, DatabaseReference ref, Context context) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -147,8 +148,13 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                 chkboxRef.child(item_key).child("check").setValue(viewHolder.chkbox.isChecked());
                 chkboxRef.keepSynced(true);
                 gps = new GpsTacker(context);
+                SharedPreferences sp=context.getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+                int myIntValue = sp.getInt("location_preference", -1);
+                int notify_integer=sp.getInt("notify_preference",-1);
                 if (firstTimeCheck) {
-                    if(gps.canGetLocation()){
+                    if(myIntValue==1)
+                    {
+                        if(gps.canGetLocation()){
                         longitude = gps.getLongitude();
                         latitude = gps .getLatitude();
                         /*Toast.makeText(context,"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude), Toast.LENGTH_SHORT).show();*/
@@ -159,8 +165,8 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                         googlePlacesUrl.append("&sensor=true");
                         googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
                         try {
-                            String str=new JsonTask().execute(String.valueOf(googlePlacesUrl)).get();
-                            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                            Location_for_notification=new JsonTask().execute(String.valueOf(googlePlacesUrl)).get();
+                            Toast.makeText(context, Location_for_notification, Toast.LENGTH_SHORT).show();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {
@@ -171,41 +177,43 @@ public class GroceryAdapter extends FirebaseRecyclerAdapter<GroceryObject, Groce
                     {
                         gps.showSettingsAlert(view);
                     }
-                    DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
-                    notifRef.keepSynced(true);
-                    notifRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                    }
+                    if (notify_integer==1) {
+                        DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child("Circle");
+                        notifRef.keepSynced(true);
+                        notifRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            for (DataSnapshot dp : dataSnapshot.getChildren()) {
+                                for (DataSnapshot dp : dataSnapshot.getChildren()) {
 
-                                DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("Notifications");
+                                    DatabaseReference notifyTheUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(dp.getKey().toString()).child("Notifications");
 
-                                notifyTheUserRef.keepSynced(true);
-                                DatabaseReference nPath = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid);
+                                    notifyTheUserRef.keepSynced(true);
+                                    DatabaseReference nPath = FirebaseDatabase.getInstance().getReference().child("Users").child(getUserId()).child(PersonalGroceryList.ListCategory.toString()).child(DetailGroceryList.pushid);
 
-                                Map postdata = new HashMap();
-                                postdata.put("friend_user_id", FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                                postdata.put("friend_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
-                                postdata.put("timestamp", ServerValue.TIMESTAMP);
-                                postdata.put("seen", true);
-                                postdata.put("current_list_id",DetailGroceryList.pushid);
-                                postdata.put("list_ref", nPath.getRef().toString());
-                                postdata.put("live_shopping",true);
+                                    Map postdata = new HashMap();
+                                    postdata.put("friend_user_id", FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                    postdata.put("friend_name", FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString());
+                                    postdata.put("timestamp", ServerValue.TIMESTAMP);
+                                    postdata.put("seen", true);
+                                    postdata.put("current_list_id", DetailGroceryList.pushid);
+                                    postdata.put("list_ref", nPath.getRef().toString());
+                                    postdata.put("live_shopping", true);
+                                    postdata.put("location",Location_for_notification);
+                                    notifyTheUserRef.push().setValue(postdata);
 
-                                notifyTheUserRef.push().setValue(postdata);
 
+                                }
 
                             }
 
-                        }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
+                            }
+                        });
+                    }
 
                 }
 
