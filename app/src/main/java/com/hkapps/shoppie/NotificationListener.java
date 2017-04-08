@@ -59,7 +59,7 @@ public class NotificationListener extends Service {
 */
 
                 if(dataSnapshot.child("seen").exists()) {
-              showNotifications(dataSnapshot.child("friend_name").getValue().toString(), "went to supermarket", dataSnapshot.child("list_ref").getValue().toString());
+              showNotifications(dataSnapshot.child("friend_name").getValue().toString(), dataSnapshot.child("location").getValue().toString(), dataSnapshot.child("list_ref").getValue().toString());
               dataSnapshot.child("seen").getRef().removeValue();
            }
 
@@ -147,8 +147,8 @@ public class NotificationListener extends Service {
 
         // mBuilder.setLargeIcon(Picasso.with(getBaseContext()).load(pic).get());
 
-        mBuilder.setContentTitle(username);
-        mBuilder.setContentText(username + " " + reacted);
+        mBuilder.setContentTitle(username+" is at ");
+        mBuilder.setContentText(reacted);
         mBuilder.setSmallIcon(R.drawable.common_google_signin_btn_icon_light_focused);
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.circle_24dp);

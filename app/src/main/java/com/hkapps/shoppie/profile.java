@@ -36,7 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class profile extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class profile extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 234;
     private TextView mailid, username, noofmembers;
     private LinearLayout circlecountview;
@@ -47,7 +47,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
     private DatabaseReference ref, ref2;
     /* boolean isImageFitToScreen=false;*/
     private int circleCount;
-
+    Switch s,notify;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Profile");
@@ -112,8 +112,9 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         ImageView mImage = (ImageView) findViewById(R.id.userimage);
         mImage.setImageBitmap(getCircleBitmap(bm));*/
         putImageView();
-        Switch s = (Switch) findViewById(R.id.location_switch);
-        Switch notify=(Switch)findViewById(R.id.notification_switch);
+
+        s = (Switch) findViewById(R.id.location_switch);
+        notify=(Switch)findViewById(R.id.notification_switch);
         SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         int myIntValue = sp.getInt("location_preference", -1);
         int notify_integer=sp.getInt("notify_preference",-1);
@@ -127,7 +128,28 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         else if (notify_integer==0)
             notify.setChecked(false);
 
-        s.setOnCheckedChangeListener(profile.this);
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                int isenabled=0;
+                SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                if (b) {
+                    isenabled = 1;
+                    if (!notify.isChecked())
+                    {
+                        isenabled = 0;
+                        s.setChecked(false);
+                    }
+
+                } else {
+                    isenabled = 0;
+                }
+                editor.putInt("location_preference", isenabled);
+                editor.commit();
+
+            }
+        });
         notify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -139,6 +161,8 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
 
                 } else {
                     isEnabled = 0;
+                    editor.putInt("location_preference", isEnabled);
+                    s.setChecked(false);
                 }
                 editor.putInt("notify_preference", isEnabled);
                 editor.commit();
@@ -199,7 +223,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
 
             }
         });
-        imageview.setOnClickListener(this);
+    /*    imageview.setOnClickListener(this);*/
         imageview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -271,11 +295,11 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
         }
     }
 
-    @Override
+    /*@Override
     public void onClick(View view) {
         //if the clicked button is choose
         if (view == imageview) {
-           /* if(isImageFitToScreen) {
+           *//* if(isImageFitToScreen) {
                 isImageFitToScreen=false;
                 imageview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 imageview.setAdjustViewBounds(true);
@@ -283,28 +307,17 @@ public class profile extends AppCompatActivity implements View.OnClickListener, 
                 isImageFitToScreen=true;
                 imageview.setLayoutParams(new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.MATCH_PARENT));
                 imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-            }*/
+            }*//*
         }
-       /* //if the clicked button is upload
+       *//* //if the clicked button is upload
         else if (view == buttonUpload) {
 
-        }*/
+        }*//*
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        int isenabled;
-        SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        if (b) {
-            isenabled = 1;
-
-        } else {
-            isenabled = 0;
-        }
-        editor.putInt("location_preference", isenabled);
-        editor.commit();
 
 
-    }
+    }*/
 }
